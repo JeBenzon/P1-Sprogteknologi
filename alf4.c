@@ -61,3 +61,6 @@ double rod2 (double a, double b, double z)
     return (-b - sqrt(z)/(2*a));
 
 }
+
+
+//Dette er en kommentar
