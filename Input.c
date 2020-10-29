@@ -8,19 +8,20 @@
 #define NAME_LEN 40
 
 int main(void){
-char line[LINE_LEN], inname[NAME_LEN], outname[NAME_LEN];
+char line[LINE_LEN], inname[NAME_LEN];
 FILE *inp;
-char *status;
-int i = 0;
-
 inp = fopen("Data/da_ddt-ud-train", "r");
 
-for (status = fgets(line, LINE_LEN, inp);
-    status != 0;
-    status = fgets(line, LINE_LEN, inp)) {
+int i = 0;
+
+char *status = fgets(line, LINE_LEN, inp);
+while(status != 0){
     if (line[strlen(line) - 1] == '\n')
     line[strlen(line) - 1] = '\0';
-printf("%3d>> %s\n\n", ++i, line);
+    printf("%d>> %s\n\n", ++i, line);
+
+    status = fgets(line, LINE_LEN, inp);
 }
+
 return (0);
 }
