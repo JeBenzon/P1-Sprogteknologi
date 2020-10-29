@@ -16,8 +16,9 @@ int i = 0;
 
 char *status = fgets(line, LINE_LEN, inp);
 while(status != 0){
-    if (line[strlen(line) - 1] == '\n')
-    line[strlen(line) - 1] = '\0';
+    if (line[strlen(line) - 1] == '\n'){
+        line[strlen(line) - 1] = '\0';
+    }
     printf("%d>> %s\n\n", ++i, line);
 
     status = fgets(line, LINE_LEN, inp);
