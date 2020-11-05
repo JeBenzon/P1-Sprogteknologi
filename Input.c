@@ -10,37 +10,33 @@
 #define CHAR_COUNT 50
 
 void arraytest();
-
 char * getfil();
-char ** getArrayFromFile(char filen[50])
+char ** getArrayFromFile(char filen[50]);
+void printArray(char ** arrayWords);
 
 int main(void){
-    arraytest();
-    
-    char * filnavn = getfil();
-    char ** word_array = getArrayFromFile(filnavn);
+    char * fil = getfil();
+    char ** ord_array = getArrayFromFile(fil);
     /*
     do calculations on array;
     */
-    printArray(word_array);
+    printArray(ord_array);
 
     return (0);
 }
 
-char ** getArrayFromFile(char filen[50]){
-
-    char **arr = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+char ** getArrayFromFile(char fil[50]){
+    //Laver Array med Malloc
+    char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
     for (int i = 0; i < WORDS_COUNT; i++){
-        arr[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
 
-    FILE *inp = fopen(filen, "r");
-
+    FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
     char *status = fgets(line, LINE_LEN, inp);
+
     int i = 0;
-
-
     while(i < WORDS_COUNT && status != 0){
 
         if (line[strlen(line) - 1] == '\n'){
@@ -62,25 +58,28 @@ char ** getArrayFromFile(char filen[50]){
         int f;
         //læser ordet fra Token og sætter det ind i Ord array
         for(f = 0; f < (int)strlen(token); f++){
-            
-        ord[i][f] = token[f];
+            ord_array[i][f] = token[f];
         }
-        ord[i][f] = '\0';
+        
+        ord_array[i][f] = '\0';
         
         //Læser ny linje ind i status
         status = fgets(line, LINE_LEN, inp);
         i++;
-    } 
+    }
+
+    return ord_array;
 } 
 
 char * getfil(){
-    char filnavn[50];
+    char * fil = (char *)malloc(50 * sizeof(char *));
     printf("skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
-    scanf("%s", &filnavn);
+    scanf("%s", fil);
 
-    return filnavn;
+    return fil;
 }
 
+//Denne funktion er bare til lige at forstå basic array Malloc **FJERNES SNART**
 void arraytest(){
     char **arr = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
     for (int i = 0; i < WORDS_COUNT; i++){
