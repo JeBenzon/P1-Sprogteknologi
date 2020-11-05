@@ -3,34 +3,36 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define LINE_LEN 500
 #define WORDS_COUNT 26
 #define CHAR_COUNT 50
 
-void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]);
-void hentfil(char filen[50]);
+void arraytest();
+
+char * getfil();
+char ** getArrayFromFile(char filen[50])
+
 int main(void){
+    arraytest();
     
-    char ord[WORDS_COUNT][CHAR_COUNT];
-    char filen[50];
+    char * filnavn = getfil();
+    char ** word_array = getArrayFromFile(filnavn);
+    /*
+    do calculations on array;
+    */
+    printArray(word_array);
 
-    hentfil(filen);
-    
-    readfile(ord, filen);
-
-
-
-    for(int j = 0; j < WORDS_COUNT; j++){
-        //puts printer ordet ud
-        puts(ord[j]);
-    }
-
-    
     return (0);
 }
 
-void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]){
+char ** getArrayFromFile(char filen[50]){
+
+    char **arr = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+    for (int i = 0; i < WORDS_COUNT; i++){
+        arr[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+    }
 
     FILE *inp = fopen(filen, "r");
 
@@ -61,7 +63,7 @@ void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]){
         //læser ordet fra Token og sætter det ind i Ord array
         for(f = 0; f < (int)strlen(token); f++){
             
-            ord[i][f] = token[f];
+        ord[i][f] = token[f];
         }
         ord[i][f] = '\0';
         
@@ -71,7 +73,36 @@ void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]){
     } 
 } 
 
-void hentfil(char filen[50]){
+char * getfil(){
+    char filnavn[50];
     printf("skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
-    scanf("%s", filen);
+    scanf("%s", &filnavn);
+
+    return filnavn;
+}
+
+void arraytest(){
+    char **arr = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+    for (int i = 0; i < WORDS_COUNT; i++){
+        arr[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+    }
+
+    // Note that arr[i][j] is same as *(*(arr+i)+j) 
+    
+    for (int i = 0; i <  WORDS_COUNT; i++){
+        for (int j = 0; j < CHAR_COUNT; j++) 
+        arr[i][j] = 'c';
+    } 
+
+    for (int i = 0; i <  WORDS_COUNT; i++){
+        for (int j = 0; j < CHAR_COUNT; j++) 
+        printf("%c ", arr[i][j]); 
+    }
+}
+
+void printArray(char ** arrayWords){
+    for(int j = 0; j < WORDS_COUNT; j++){
+        //puts printer ordet ud
+        puts(arrayWords[j]);
+    }
 }
