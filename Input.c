@@ -106,3 +106,27 @@ void printArray(char ** arrayWords){
         puts(arrayWords[j]);
     }
 }
+
+void menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt sammenhæng.
+    char menu, filnavn[50]; //Bemærk filnavn, måske faktisk hedder "fil" eller "filen".
+    //Læsning til brugeren, spørg om valg til switchen 1,2 eller 3.
+    printf("Indtast filvalg til indlæsning fra menuen,\n med nummeret fra listen, forsæt med Enter:\n");
+    printf("1:Train\n2:Test\n3:Skriv selv adresse på fil til indlsæning.\n");
+    scanf("%c",&menu);
+    //Case 1&2 bruger "char filnavn", ved ikke om det virker ¯\_(ツ)_/¯
+    switch (menu){
+    case '1':
+        char filnavn[50] = 'Data/da_ddt-ud-train';
+        break;
+    
+    case '2':
+        char filnavn[50] = 'Data/da_ddt-ud-test';
+        break;
+    //Case 3 sprøger til at brugeren selv skal vælge
+    case '3':
+        printf("Skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
+        scanf("%s", filnavn);
+    //Eventuele metoder kan tilføjes herunder
+    }
+
+}
