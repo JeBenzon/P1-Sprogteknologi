@@ -8,13 +8,36 @@
 #define WORDS_COUNT 10
 #define CHAR_COUNT 50
 
+void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]);
+void hentfil(char filen[50]);
 int main(void){
-
+    
     char ord[WORDS_COUNT][CHAR_COUNT];
+    char filen[50];
+
+    hentfil(filen);
+    
+    readfile(ord, filen);
+
+
+
+    for(int j = 0; j < WORDS_COUNT; j++){
+        //puts printer ordet ud
+        puts(ord[j]);
+    }
+
+    
+    return (0);
+}
+
+void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]){
+
+    FILE *inp = fopen(filen, "r");
+
     char line[LINE_LEN];
-    FILE *inp = fopen("Data/da_ddt-ud-train", "r");
     char *status = fgets(line, LINE_LEN, inp);
     int i = 0;
+
 
     while(i < WORDS_COUNT && status != 0){
 
@@ -45,13 +68,10 @@ int main(void){
         //Læser ny linje ind i status
         status = fgets(line, LINE_LEN, inp);
         i++;
-    }
+    } 
+} 
 
-    for(int j = 0; j < WORDS_COUNT; j++){
-        //puts printer ordet ud
-        puts(ord[j]);
-    
-    }   
-
-    return (0);
+void hentfil(char filen[50]){
+    printf("skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
+    scanf("%s", filen);
 }
