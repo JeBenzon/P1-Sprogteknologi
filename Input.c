@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define LINE_LEN 500
-#define WORDS_COUNT 10
+#define WORDS_COUNT 26
 #define CHAR_COUNT 50
 
 int main(void){
@@ -48,7 +48,7 @@ int main(void){
     }
 
     for(int j = 0; j < WORDS_COUNT; j++){
-        //puts printer ordet ud
+        //puts printer ordet ud 
         puts(ord[j]);
     
     }   
