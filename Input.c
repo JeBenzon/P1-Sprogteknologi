@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define LINE_LEN 500
-#define WORDS_COUNT 10
+#define WORDS_COUNT 26
 #define CHAR_COUNT 50
 
 void readfile(char ord[WORDS_COUNT][CHAR_COUNT], char filen[50]);
