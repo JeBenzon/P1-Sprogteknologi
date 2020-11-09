@@ -125,6 +125,7 @@ void menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt
     case '3':
         printf("Skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
         scanf("%s", filnavn);
+        break;
     //Eventuele metoder kan tilføjes herunder
     }
 
