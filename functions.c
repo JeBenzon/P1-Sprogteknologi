@@ -8,21 +8,95 @@
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 
+int is_capitol_letter(char first_letter);
+int is_correct_ending(char *ord);
+int substantiver(char *ord);
+
 void testord(char ** ord_array, char ** class_array);
 
 //Test main for functions
 int main(void){
     char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
+    char **vores_klaase_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
 
     testord(ord_array, class_array);
+
+    substantiver(ord_array[2]);
+
+    
+
+   printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
+int substantiver(char *ord) {
+    printf(" %s\n\n", ord);
+
+    if(is_capitol_letter(ord[0]) == 2) {
+        printf("capitol er opfyldt\n\n");
+    }
+
+    if(is_correct_ending(ord) == 1) {
+        printf("ending er opfyldt\n\n");
+    }
+
+    return 0;
+}
+
+int is_capitol_letter(char first_letter) {
+
+    if(first_letter >= 'A' && first_letter <= 'Z') {
+        return 2;
+    } else if(first_letter >= 'a' && first_letter <= 'z') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int is_correct_ending(char *ord) {
+    char er[] = "er";
+    char e[] = "e";
+    char ene[] = "ene";
+    char en[] = "en";
+    char et[] = "et";
+    char r[] = "r";
+    char ne[] = "ne";
+    char s[] = "s";
+
+    if(strstr(ord, ene)) {
+        return 1;
+    } else if(strstr(ord, ne)) {
+        return 1;
+    } else if(strstr(ord, en)) {
+        return 1;
+    } else if(strstr(ord, er)) {
+        return 1;
+    } else if(strstr(ord, et)) {
+        return 1;
+    } else if(strstr(ord, s)) {
+        return 1;
+    } else if(strstr(ord, r)) {
+        return 1;
+    } else if(strstr(ord, e)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// funktion for endelse(artikel) 
+// funktion for artikel - tjek forrige ord
+// funktion for første ord i sætning - tjek forrige ord for punktum
+// funktion for ordklaseesandsynlighed - tjek returværdier
+
+
+
 
 void testord(char ** ord_array, char ** class_array){
 
     for (int i = 0; i < WORDS_COUNT; i++){
         ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
-        class_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+        class_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
     }
     ord_array[0][0] = 'P';
     ord_array[0][1] = 'a';
