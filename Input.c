@@ -6,17 +6,20 @@
 #include <stdlib.h>
 
 #define LINE_LEN 500
-#define WORDS_COUNT 26
+#define WORDS_COUNT 50
 #define CHAR_COUNT 50
 
 void arraytest();
 char * getfil();
-char ** getArrayFromFile(char filen[50]);
+void getArrayFromFile(char fil[50],char ** ord_array, char ** class_array);
 void printArray(char ** arrayWords);
 
 int main(void){
+    char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+    char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+
     char * fil = getfil();
-    char ** ord_array = getArrayFromFile(fil);
+    getArrayFromFile(fil, ord_array, class_array);
     /*
     do calculations on array;
     */
@@ -25,9 +28,8 @@ int main(void){
     return (0);
 }
 
-char ** getArrayFromFile(char fil[50]){
+void getArrayFromFile(char fil[50], char ** ord_array, char ** class_array){
     //Laver Array med Malloc
-    char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
     for (int i = 0; i < WORDS_COUNT; i++){
         ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
@@ -35,7 +37,7 @@ char ** getArrayFromFile(char fil[50]){
     FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
     char *status = fgets(line, LINE_LEN, inp);
-
+    
     int i = 0;
     while(i < WORDS_COUNT && status != 0){
 
@@ -43,8 +45,22 @@ char ** getArrayFromFile(char fil[50]){
             line[strlen(line) - 1] = '\0';
         }
 
-        //Læser alle ord fra linjen ind i Token, så består nu af flere ord.
+        //Læser alle ord fra linjen ind i Token, som nu består af flere ord.
         char *token = strtok(line, "\t");
+
+        
+        //Tjekker om Token er tom
+        if(token == NULL){
+            i++;
+            status = fgets(line, LINE_LEN, inp);
+            continue;
+        }
+
+        if(token[0] == '#' || token[0] == '\0'){
+            status = fgets(line, LINE_LEN, inp);
+            continue;
+        }
+
         //skipper et ord i token.
         token = strtok(NULL, "\t");
         
@@ -54,6 +70,8 @@ char ** getArrayFromFile(char fil[50]){
             status = fgets(line, LINE_LEN, inp);
             continue;
         }
+        
+        
 
         int f;
         //læser ordet fra Token og sætter det ind i Ord array
@@ -67,8 +85,6 @@ char ** getArrayFromFile(char fil[50]){
         status = fgets(line, LINE_LEN, inp);
         i++;
     }
-
-    return ord_array;
 } 
 
 char * getfil(){
@@ -105,7 +121,7 @@ void printArray(char ** arrayWords){
         puts(arrayWords[j]);
     }
 }
-
+/*
 void menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt sammenhæng.
     char menu, filnavn[50]; //Bemærk filnavn, måske faktisk hedder "fil" eller "filen".
     //Læsning til brugeren, spørg om valg til switchen 1,2 eller 3.
@@ -128,5 +144,7 @@ void menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt
         break;
     //Eventuele metoder kan tilføjes herunder
     }
-
+    
 }
+
+*/
