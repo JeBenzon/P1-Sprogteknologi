@@ -11,6 +11,8 @@
 int is_capitol_letter(char first_letter);
 int is_correct_ending(char *ord);
 int substantiver(char *ord);
+void forholdsord(char *ord);
+int forholds_ord(char *ord);
 
 void testord(char ** ord_array, char ** class_array);
 
@@ -22,11 +24,13 @@ int main(void){
 
     testord(ord_array, class_array);
 
-    substantiver(ord_array[2]);
-
+    substantiver(ord_array[0]);
+    forholdsord(ord_array[0]);
+    
     
 
-   printf(" %d", is_capitol_letter(ord_array[24][3]));
+   printf(" %d\n", is_capitol_letter(ord_array[24][3]));
+
 }
 int substantiver(char *ord) {
     printf(" %s\n\n", ord);
@@ -38,8 +42,19 @@ int substantiver(char *ord) {
     if(is_correct_ending(ord) == 1) {
         printf("ending er opfyldt\n\n");
     }
+    
 
     return 0;
+}
+
+void forholdsord(char *ord)
+{
+     if (forholds_ord(ord) == 1)
+    {
+        printf("Ord er forholdsord\n\n");
+    }
+
+    //ordbog tjek 
 }
 
 int is_capitol_letter(char first_letter) {
@@ -90,7 +105,22 @@ int is_correct_ending(char *ord) {
 // funktion for ordklaseesandsynlighed - tjek returværdier
 
 
+int forholds_ord(char *ord)
+{
+    //et array med alle ord
+    char forholdsord[52][15] = {"i", "I", "paa", "Paa", "til", "Til", "fra", "Fra", "over", "Over", "under", "Under", "ved", "Ved", "for", "For", "efter", "Efter", "om", "Om", "med", "Med", "af", "Af", "af", "Ad", "hos", "Hos", "gennem", "Gennem", "mod", "Mod", "bag", "Bag", "foran", "Foran", "forbi", "Forbi", "før", "Før", "imod", "Imod", "inden", "Inden", "langs", "Langs", "mellem", "uden", "Uden", "Mellem"};
 
+    // for loop
+    for(int i = 0; i < 52; i++)
+    {
+        
+        if (strcmp(ord, forholdsord[i]) == 0)
+        {
+            return 1;
+        }   
+    }
+    return 0;
+}
 
 void testord(char ** ord_array, char ** class_array){
 
