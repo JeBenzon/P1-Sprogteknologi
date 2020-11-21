@@ -6,34 +6,35 @@
 #include <stdlib.h>
 
 #define LINE_LEN 500
-#define WORDS_COUNT 50
+#define WORDS_COUNT 500
 #define CHAR_COUNT 50
 
 void arraytest();
-char * getfil();
-void getArrayFromFile(char fil[50],char ** ord_array, char ** class_array);
-void printArray(char ** arrayWords);
+char * menu_filvalg();
+void getArrayFromFile();
+void printArray(char ** array_words, char ** array_class);
 
 int main(void){
-    char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
-    char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
 
-    char * fil = getfil();
-    getArrayFromFile(fil, ord_array, class_array);
-    /*
-    do calculations on array;
-    */
-    printArray(ord_array);
+    getArrayFromFile();
 
-    return (0);
+    return 0;
 }
 
-void getArrayFromFile(char fil[50], char ** ord_array, char ** class_array){
+void getArrayFromFile(){
+    //laver 2 arrays
+    char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+    char **array_class = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+
+    char * fil = menu_filvalg();
+
     //Laver Array med Malloc
     for (int i = 0; i < WORDS_COUNT; i++){
-        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+        array_words[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+        array_class[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
 
+    //Åbner fil
     FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
     char *status = fgets(line, LINE_LEN, inp);
@@ -41,6 +42,7 @@ void getArrayFromFile(char fil[50], char ** ord_array, char ** class_array){
     int i = 0;
     while(i < WORDS_COUNT && status != 0){
 
+        //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
         }
@@ -48,103 +50,64 @@ void getArrayFromFile(char fil[50], char ** ord_array, char ** class_array){
         //Læser alle ord fra linjen ind i Token, som nu består af flere ord.
         char *token = strtok(line, "\t");
 
+        //Tjekker om Token er tom eller en kommentar
+        if(token == NULL || token[0] == '#'){
+            status = fgets(line, LINE_LEN, inp);
+            continue;
+        }
         
-        //Tjekker om Token er tom
-        if(token == NULL){
-            i++;
-            status = fgets(line, LINE_LEN, inp);
-            continue;
+        //skipper et ord i token.
+        token = strtok(NULL, "\t");
+ 
+        //læser ordet fra Token og sætter det ind i Ord array
+        int f;
+        for(f = 0; f < (int)strlen(token); f++){
+            array_words[i][f] = token[f];
         }
-
-        if(token[0] == '#' || token[0] == '\0'){
-            status = fgets(line, LINE_LEN, inp);
-            continue;
-        }
+        array_words[i][f] = '\0';
 
         //skipper et ord i token.
         token = strtok(NULL, "\t");
-        
-        //Tjekker om Token er tom
-        if(token == NULL){
-            i++;
-            status = fgets(line, LINE_LEN, inp);
-            continue;
-        }
-        
-        
+        token = strtok(NULL, "\t");
 
-        int f;
-        //læser ordet fra Token og sætter det ind i Ord array
         for(f = 0; f < (int)strlen(token); f++){
-            ord_array[i][f] = token[f];
+            array_class[i][f] = token[f];
         }
-        
-        ord_array[i][f] = '\0';
+        array_class[i][f] = '\0';
         
         //Læser ny linje ind i status
         status = fgets(line, LINE_LEN, inp);
         i++;
     }
+
+    printArray(array_words, array_class);
 } 
 
-char * getfil(){
-    char * fil = (char *)malloc(50 * sizeof(char *));
-    printf("skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
-    scanf("%s", fil);
-
-    return fil;
-}
-
-//Denne funktion er bare til lige at forstå basic array Malloc **FJERNES SNART**
-void arraytest(){
-    char **arr = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
-    for (int i = 0; i < WORDS_COUNT; i++){
-        arr[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
-    }
-
-    // Note that arr[i][j] is same as *(*(arr+i)+j) 
-    
-    for (int i = 0; i <  WORDS_COUNT; i++){
-        for (int j = 0; j < CHAR_COUNT; j++) 
-        arr[i][j] = 'c';
-    } 
-
-    for (int i = 0; i <  WORDS_COUNT; i++){
-        for (int j = 0; j < CHAR_COUNT; j++) 
-        printf("%c ", arr[i][j]); 
-    }
-}
-
-void printArray(char ** arrayWords){
-    for(int j = 0; j < WORDS_COUNT; j++){
+void printArray(char ** array_words, char ** array_class){
+    for(int i = 0; i < WORDS_COUNT; i++){
         //puts printer ordet ud
-        puts(arrayWords[j]);
+        printf("%s \t -> %s \n", array_words[i], array_class[i]);
     }
-}
-/*
-void menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt sammenhæng.
-    char menu, filnavn[50]; //Bemærk filnavn, måske faktisk hedder "fil" eller "filen".
-    //Læsning til brugeren, spørg om valg til switchen 1,2 eller 3.
-    printf("Indtast filvalg til indlæsning fra menuen,\n med nummeret fra listen, forsæt med Enter:\n");
-    printf("1:Train\n2:Test\n3:Skriv selv adresse på fil til indlsæning.\n");
-    scanf("%c",&menu);
-    //Case 1&2 bruger "char filnavn", ved ikke om det virker ¯\_(ツ)_/¯
-    switch (menu){
-    case '1':
-        char filnavn[50] = 'Data/da_ddt-ud-train';
-        break;
-    
-    case '2':
-        char filnavn[50] = 'Data/da_ddt-ud-test';
-        break;
-    //Case 3 sprøger til at brugeren selv skal vælge
-    case '3':
-        printf("Skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
-        scanf("%s", filnavn);
-        break;
-    //Eventuele metoder kan tilføjes herunder
-    }
-    
 }
 
-*/
+char * menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt sammenhæng.
+    char * fil = (char *)malloc(50 * sizeof(char *));
+    int menu;
+    //Læsning til brugeren, spørg om valg til switchen 1, 2 eller 3.
+    printf("Indtast filvalg til indlæsning fra menuen,\nmed nummeret fra listen, forsæt med Enter:\n");
+    printf("1: Train\n2: Test\n3: Skriv selv adresse på fil til indlsæning.\n");
+    scanf("%d",&menu);
+
+    switch (menu){
+    case 1:
+        return "Data/da_ddt-ud-train";
+    case 2:
+        return "Data/da_ddt-ud-test";
+    //Case 3 sprøger til at brugeren selv skal vælge
+    case 3:      
+        printf("skriv filnavns'stien f.eks. Data/da_ddt-ud-train\n");
+        scanf("%s", fil);
+    }
+
+    return "0";
+}
