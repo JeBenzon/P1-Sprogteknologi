@@ -7,6 +7,6 @@
 #include "input.c"
 
 int main(void){
-    getArrayFromFile();
+    getWordBookClass();
 
 }
