@@ -14,13 +14,6 @@ char * menu_filvalg();
 void getArrayFromFile();
 void printArray(char ** array_words, char ** array_class);
 
-int main(void){
-
-    getArrayFromFile();
-
-    return 0;
-}
-
 void getArrayFromFile(){
     //laver 2 arrays
     char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
