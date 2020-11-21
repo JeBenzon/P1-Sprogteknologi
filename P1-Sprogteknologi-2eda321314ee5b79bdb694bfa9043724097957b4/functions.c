@@ -54,6 +54,9 @@ int is_capitol_letter(char first_letter) {
 }
 
 int is_correct_ending(char *ord) {
+
+    //char endings[8] = {"er", "e", "ene", "en", "et", "r", "ne", "s"}; //Alternativ
+
     char er[] = "er";
     char e[] = "e";
     char ene[] = "ene";
@@ -62,6 +65,14 @@ int is_correct_ending(char *ord) {
     char r[] = "r";
     char ne[] = "ne";
     char s[] = "s";
+
+    //Alternativ
+    /*
+    for(int i = 0; i < 8; i++){
+        if(strstr(ord, endings[i])){
+            return 1;
+        }
+    }*/
 
     if(strstr(ord, ene)) {
         return 1;
