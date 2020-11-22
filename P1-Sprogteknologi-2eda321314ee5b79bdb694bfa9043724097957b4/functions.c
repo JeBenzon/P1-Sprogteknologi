@@ -8,35 +8,50 @@
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 
+int substantiver(char *ord);
 int is_capitol_letter(char first_letter);
 int is_correct_ending(char *ord);
-int substantiver(char *ord);
+int str_ending_compare(char *ord, char *ending);
+
+int artikler(char *ord);
+int is_article(char *ord);
 
 void testord(char ** ord_array, char ** class_array);
+
 
 //Test main for functions
 int main(void){
     char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **vores_klaase_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
+    
 
     testord(ord_array, class_array);
 
-    substantiver(ord_array[2]);
+    artikler(ord_array[1]);
+
+    substantiver(ord_array[1]);
 
     
 
    printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
+
+
+
 int substantiver(char *ord) {
     printf(" %s\n\n", ord);
 
     if(is_capitol_letter(ord[0]) == 2) {
         printf("capitol er opfyldt\n\n");
+    } else {
+        printf("capitol er ikke opfyldt\n\n");
     }
 
     if(is_correct_ending(ord) == 1) {
         printf("ending er opfyldt\n\n");
+    } else {
+        printf("ending er ikke opfyldt\n\n");
     }
 
     return 0;
@@ -54,16 +69,6 @@ int is_capitol_letter(char first_letter) {
 }
 
 int is_correct_ending(char *ord) {
-
-    /* Alternativ kode, -> kortere.
-    char endings[8] = {"er", "e", "ene", "en", "et", "r", "ne", "s"};
-
-    for(int i = 0; i < 8; i++){
-        if(strstr(ord, endings[i])){
-            return 1;
-        }
-    }*/
-
     char er[] = "er";
     char e[] = "e";
     char ene[] = "ene";
@@ -72,8 +77,37 @@ int is_correct_ending(char *ord) {
     char r[] = "r";
     char ne[] = "ne";
     char s[] = "s";
+    // char test[] = "de";
 
-    if(strstr(ord, ene)) {
+    /* TEST PROG
+    if((str_ending_compare(ord, test) == 0)) {
+        return 1;
+    } else{
+        return 0;
+    } */
+    
+    if((str_ending_compare(ord, ene) == 0)) {            // strstr(ord, segment) tjekker om første-string(ord) indholder anden-string(segment)
+        return 1;
+    } else if((str_ending_compare(ord, ne) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, en) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, er) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, et) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, s) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, r) == 0)) {
+        return 1;
+    } else if((str_ending_compare(ord, e) == 0)) {
+        return 1;
+    } else {
+        return 0;
+    }
+
+    /*
+    if(strstr(ord, ene)) {            // strstr(ord, segment) tjekker om første-string(ord) indholder anden-string(segment)
         return 1;
     } else if(strstr(ord, ne)) {
         return 1;
@@ -92,7 +126,62 @@ int is_correct_ending(char *ord) {
     } else {
         return 0;
     }
+    */
 }
+
+int str_ending_compare(char *ord, char *ending) {
+    int c;
+    int result;
+    int ord_len = (strlen(ord) + 1);
+    int ending_len = (strlen(ending) + 1);
+    char ord_ending[ending_len];
+
+    // printf(" %s, %s\n", ord, ending);
+
+    for(c = 1; c <= ending_len; c++) {
+        ord_ending[ending_len - c] = ord[ord_len - c];
+    }
+
+    // printf(" %s, %s\n", ending, ord_ending);
+
+    return strcmp(ending, ord_ending);
+}
+
+
+int artikler(char *ord) {
+    
+    if(is_article(ord) == 1) {
+        printf("\narticle er opfyldt\n\n");
+    } else {
+        printf("\narticle er ikke opfyldt\n\n");
+    }
+    
+    return 0;
+}
+
+int is_article(char *ord) {
+    char den[] = "den";
+    char det[] = "det";
+    char en[] = "en";
+    char et[] = "et";
+    char de[] = "de";
+    
+    if((strcmp(ord, den) == 0)) {                                      // strcmp(ene_string, anden_string) tjekker om første-string tilsvarer anden-string 
+        return 1;
+    } else if((strcmp(ord, det) == 0)) {
+        return 1;
+    } else if((strcmp(ord, en) == 0)) {
+        return 1;
+    } else if((strcmp(ord, et) == 0)) {
+        return 1;
+    } else if((strcmp(ord, de) == 0)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
 
 // funktion for endelse(artikel) 
 // funktion for artikel - tjek forrige ord
