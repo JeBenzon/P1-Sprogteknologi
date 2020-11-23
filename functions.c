@@ -32,11 +32,19 @@ int is_conjunction(char *ord);
 int praepositioner(char *ord); // forholdsord
 int is_preposition(char *ord);
 
+int udraabsord(char *ord); // udraabsord
+int is_yelling(char *ord);
+
+int lydord(char *ord); // lydord
+int is_sound(char *ord);
+
+int talord(char *ord); // talord
+int cmp_talord(char *ord);
+int str_talord(char *ord);
+
 
 // int pronomener(char *ord); // stedord
-// int udraabsord(char *ord); // udraabsord
-// int lydord(char *ord); // lydord
-// int talord(char *ord); // talord
+
 
 void testord(char ** ord_array, char ** class_array);
 
@@ -63,6 +71,12 @@ int main(void){
     konjunktioner(ord_array[21]);
 
     praepositioner(ord_array[21]);
+
+    udraabsord(ord_array[21]);
+
+    lydord(ord_array[21]);
+
+    talord(ord_array[21]);
     
     printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
@@ -481,7 +495,7 @@ int is_preposition(char *ord) {
         return 1;
     } else if((strcmp(ord, med) == 0)) {
         return 1;
-    }  else if((strcmp(ord, hos) == 0)) {
+    } else if((strcmp(ord, hos) == 0)) {
         return 1;
     } else if((strcmp(ord, mod) == 0)) {
         return 1;
@@ -502,12 +516,292 @@ int is_preposition(char *ord) {
     }
 }
 
+int udraabsord(char *ord) {
+    
+    if(is_yelling(ord) == 1) {
+        printf("udraabsord er opfyldt\n\n");
+    } else {
+        printf("udraabsord er ikke opfyldt\n\n");
+    }
+    return 0;
+}
+
+int is_yelling(char *ord) {
+    char tillykke[] = "tillykke";
+    char fandens[] = "fandens";
+    char satans[] = "satans";
+    char farvel[] = "farvel";
+    char bravo[] = "bravo";
+    char fuck[] = "fuck";
+    char lort[] = "lort";
+    char roev[] = "roev";
+    char hej[] = "hej";
+    char nej[] = "nej";
+    char aah[] = "aah";
+    char ja[] = "ja";
+    char av[] = "av";
+    char wow[] = "wow";
+    char shh[] = "shh";
+    char hmm[] = "hmm";
+    char ih[] = "ih";
+    
+    if((strcmp(ord, tillykke) == 0)) {                                   
+        return 1;
+    } else if((strcmp(ord, fandens) == 0)) {
+        return 1;
+    } else if((strcmp(ord, satans) == 0)) {
+        return 1;
+    } else if((strcmp(ord, farvel) == 0)) {
+        return 1;
+    } else if((strcmp(ord, bravo) == 0)) {
+        return 1;
+    } else if((strcmp(ord, fuck) == 0)) {
+        return 1;
+    } else if((strcmp(ord, lort) == 0)) {
+        return 1;
+    } else if((strcmp(ord, roev) == 0)) {
+        return 1;
+    } else if((strcmp(ord, hej) == 0)) {
+        return 1;
+    } else if((strcmp(ord, nej) == 0)) {
+        return 1;
+    } else if((strcmp(ord, aah) == 0)) {
+        return 1;
+    } else if((strcmp(ord, av) == 0)) {
+        return 1;
+    } else if((strcmp(ord, wow) == 0)) {
+        return 1;
+    } else if((strcmp(ord, shh) == 0)) {
+        return 1;
+    } else if((strcmp(ord, hmm) == 0)) {
+        return 1;
+    } else if((strcmp(ord, ih) == 0)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int lydord(char *ord) {
+    
+    if(is_sound(ord) == 1) {
+        printf("lydord er opfyldt\n\n");
+    } else {
+        printf("lydord er ikke opfyldt\n\n");
+    }
+    return 0;
+}
+
+int is_sound(char *ord) {
+    char dingeling[] = "dingeling";
+    char kykliky[] = "kykliky";
+    char pladask[] = "pladask";
+    char hvisle[] = "hvisle";
+    char bipper[] = "bipper";
+    char miav[] = "miav";
+    char atju[] = "atju";
+    char muh[] = "muh";
+    char bip[] = "bip";
+    
+    if((strcmp(ord, dingeling) == 0)) {                                   
+        return 1;
+    } else if((strcmp(ord, kykliky) == 0)) {
+        return 1;
+    } else if((strcmp(ord, pladask) == 0)) {
+        return 1;
+    } else if((strcmp(ord, hvisle) == 0)) {
+        return 1;
+    } else if((strcmp(ord, bipper) == 0)) {
+        return 1;
+    } else if((strcmp(ord, miav) == 0)) {
+        return 1;
+    } else if((strcmp(ord, atju) == 0)) {
+        return 1;
+    } else if((strcmp(ord, muh) == 0)) {
+        return 1;
+    } else if((strcmp(ord, bip) == 0)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int talord(char *ord) {
+    
+    if(cmp_talord(ord) == 1 || str_talord(ord) == 1) {
+        printf("talord er opfyldt\n\n");
+    } else {
+        printf("talord er ikke opfyldt\n\n");
+    }
+    return 0;
+}
+
+int cmp_talord(char *ord) {
+    char en[] = "en";
+    char to[] = "to";
+    char tre[] = "tre";
+    char fire[] = "fire";
+    char fem[] = "fem";
+    char seks[] = "seks";
+    char syv[] = "syv";
+    char otte[] = "otte";
+    char ni[] = "ni";
+    char ti[] = "ti";
+    char elleve[] = "elleve";
+    char tolv[] = "tolv";
+    char tretten[] = "tretten";
+    char fjorten[] = "fjorten";
+    char femten[] = "femten";
+    char seksten[] = "seksten";
+    char sytten[] = "sytten";
+    char atten[] = "atten";
+    char nitten[] = "nitten";
+    char tyve[] = "tyve";
+    char tredive[] = "tredive";
+    char fyrre[] = "fyrre";
+    char halvtreds[] = "halvtreds";
+    char tres[] = "tres";
+    char treds[] = "treds";
+    char halvfjerds[] = "halvfjerds";
+    char firs[] = "firs";
+    char halvfems[] = "halvfems";
+    char hundred[] = "hundred";
+    char hundrede[] = "hundrede";
+    char tusind[] = "tusind";
+    char tusinde[] = "tusinde";
+
+    if((strcmp(ord, en) == 0)) { 
+        return 1;
+    } else if((strcmp(ord, to) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tre) == 0)) {
+        return 1;
+    } else if((strcmp(ord, fire) == 0)) {
+        return 1;
+    } else if((strcmp(ord, fem) == 0)) {
+        return 1;
+    } else if((strcmp(ord, seks) == 0)) {
+        return 1;
+    } else if((strcmp(ord, syv) == 0)) {
+        return 1;
+    } else if((strcmp(ord, otte) == 0)) {
+        return 1;
+    } else if((strcmp(ord, ni) == 0)) {
+        return 1;
+    } else if((strcmp(ord, ti) == 0)) {
+        return 1;
+    } else if((strcmp(ord, elleve) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tolv) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tretten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, fjorten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, femten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, seksten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, sytten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, atten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, nitten) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tyve) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tredive) == 0)) {
+        return 1;
+    } else if((strcmp(ord, fyrre) == 0)) {
+        return 1;
+    } else if((strcmp(ord, halvtreds) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tres) == 0)) {
+        return 1;
+    } else if((strcmp(ord, treds) == 0)) {
+        return 1;
+    } else if((strcmp(ord, halvfjerds) == 0)) {
+        return 1;
+    } else if((strcmp(ord, firs) == 0)) {
+        return 1;
+    } else if((strcmp(ord, halvfems) == 0)) {
+        return 1;
+    } else if((strcmp(ord, hundred) == 0)) {
+        return 1;
+    } else if((strcmp(ord, hundrede) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tusind) == 0)) {
+        return 1;
+    } else if((strcmp(ord, tusinde) == 0)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int str_talord(char *ord) {
+    char enog[] = "enog";
+    char toog[] = "toog";
+    char treog[] = "treog";
+    char fireog[] = "fireog";
+    char femog[] = "femog";
+    char seksog[] = "seksog";
+    char syvog[] = "syvog";
+    char otteog[] = "otteog";
+    char niog[] = "niog";
+    char hundred[] = "hundred";
+    char hundrede[] = "hundrede";
+    char tusind[] = "tusind";
+    char tusinde[] = "tusinde";
+    /* Sikkert udnoedvendigt, men kan ogsaa compare med disse strings for oeget praecition
+    char tyve[] = "tyve";
+    char tredive[] = "tredive";
+    char fyrre[] = "fyrre";
+    char halvtreds[] = "halvtreds";
+    char tres[] = "tres";
+    char treds[] = "treds";
+    char halvfjerds[] = "halvfjerds";
+    char firs[] = "firs";
+    char halvfems[] = "halvfems";
+    */
+
+    if(strstr(ord, enog)) {
+        return 1;
+    } else if(strstr(ord, toog)) {
+        return 1;
+    } else if(strstr(ord, treog)) {
+        return 1;
+    } else if(strstr(ord, fireog)) {
+        return 1;
+    } else if(strstr(ord, femog)) {
+        return 1;
+    } else if(strstr(ord, seksog)) {
+        return 1;
+    } else if(strstr(ord, syvog)) {
+        return 1;
+    } else if(strstr(ord, otteog)) {
+        return 1;
+    } else if(strstr(ord, niog)) {
+        return 1;
+    } else if(strstr(ord, hundred)) {
+        return 1;
+    } else if(strstr(ord, hundrede)) {
+        return 1;
+    } else if(strstr(ord, tusind)) {
+        return 1;
+    } else if(strstr(ord, tusinde)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 
 
 // funktion for endelse(artikel) 
 // funktion for artikel - tjek forrige ord
 // funktion for første ord i sætning - tjek forrige ord for punktum
-// funktion for ordklaseesandsynlighed - tjek returværdier
+// funktion for ordklassesandsynlighed - tjek returværdier
 
 
 
