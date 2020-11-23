@@ -13,6 +13,9 @@ int is_correct_ending(char *ord);
 int substantiver(char *ord);
 void forholdsord(char *ord);
 int forholds_ord(char *ord);
+void stedord(char *ord);
+int sted_ord(char *ord);
+
 
 void testord(char ** ord_array, char ** class_array);
 
@@ -26,6 +29,7 @@ int main(void){
 
     substantiver(ord_array[0]);
     forholdsord(ord_array[0]);
+    stedord(ord_array[19]);
     
     
 
@@ -55,6 +59,15 @@ void forholdsord(char *ord)
     }
 
     //ordbog tjek 
+}
+
+void stedord(char *ord)
+{
+    if (sted_ord(ord) == 1)
+    {
+        printf("Ord er stedord\n\n");
+    }
+    
 }
 
 int is_capitol_letter(char first_letter) {
@@ -119,6 +132,62 @@ int forholds_ord(char *ord)
             return 1;
         }   
     }
+    return 0;
+}
+
+int sted_ord(char *ord)
+{
+    // et array med alle ord
+    char personlige[31][15] = {"jeg", "Jeg", "du", "Du", "han", "Han", "hun", "Hun", "den", "Den", "det", "Det", "vi", "Vi", "I", "de", "De", "mig", "Mig", "dig", "Dig", "Dem", "ham", "Ham", "hende", "Hende", "os", "Os", "jer", "Jer", "dem"};
+    char ejestedord[26][15] = {"min", "Min", "mit", "Mit", "mine", "Mine", "din", "Din", "dit", "Dit", "dine", "Dine", "hans", "Hans", "hendes", "Hendes", "dens", "Dens", "dets", "Dets", "vores", "Vores", "jeres", "Jeres", "deres", "Deres"};
+    char tilbagevisende[6][15] = {"sin", "Sin", "sit", "Sit", "sine", "Sine"};
+    char sporgeord[22] [15] = {"hvem", "Hvem", "hvad", "Hvad", "hvor", "Hvor", "hvornår", "Hvornår", "hvor længe", "Hvor længe", "hvorfor", "Hvorfor", "hvordan", "Hvordan", "hvilke", "Hvilke", "hvilken", "Hvilken", "hvilket", "Hvilket", "hvor mange", "Hvor mange"};
+    char henvisende[4][15] = {"der", "Der", "som", "Som"};
+    for (int i = 0; i < sizeof(personlige); i++)
+    {
+        if (strcmp(ord, personlige[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+
+    for (int i = 0; i < sizeof(ejestedord); i++)
+    {
+        if (strcmp(ord, ejestedord[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+    
+    for (int i = 0; i < sizeof(tilbagevisende); i++)
+    {
+        if (strcmp(ord, tilbagevisende[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+
+    for (int i = 0; i < sizeof(sporgeord); i++)
+    {
+        if (strcmp(ord, sporgeord[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+
+    for (int i = 0; i < sizeof(henvisende); i++)
+    {
+        if (strcmp(ord, henvisende[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+    
     return 0;
 }
 
