@@ -8,6 +8,8 @@
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 
+#define WORDS_IN_ORDBOG 64896
+
 int substantiver(char *ord);
 int is_capitol_letter(char first_letter);
 int is_correct_ending(char *ord);
@@ -17,27 +19,30 @@ int artikler(char *ord);
 int is_article(char *ord);
 
 void testord(char ** ord_array, char ** class_array);
+char * BinSearch(char ** ord_array, char ** word_class, char * ord);
 
-
+/*
 //Test main for functions
 int main(void){
     char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **vores_klaase_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     
-
     testord(ord_array, class_array);
 
-    artikler(ord_array[1]);
+    //artikler(ord_array[1]);
 
-    substantiver(ord_array[1]);
+    //substantiver(ord_array[1]);
 
-    
+    //printf(" %d", is_capitol_letter(ord_array[24][3]));
 
-   printf(" %d", is_capitol_letter(ord_array[24][3]));
-}
+    char ord[9] = "formanden";
 
+    BinSearch(ord_array, ord);
 
+    printf("test\n");
+
+}*/
 
 int substantiver(char *ord) {
     printf(" %s\n\n", ord);
@@ -147,7 +152,6 @@ int str_ending_compare(char *ord, char *ending) {
     return strcmp(ending, ord_ending);
 }
 
-
 int artikler(char *ord) {
     
     if(is_article(ord) == 1) {
@@ -181,13 +185,61 @@ int is_article(char *ord) {
     }
 }
 
-
-
 // funktion for endelse(artikel) 
 // funktion for artikel - tjek forrige ord
 // funktion for første ord i sætning - tjek forrige ord for punktum
 // funktion for ordklaseesandsynlighed - tjek returværdier
 
+
+/*
+//finder ud af om et ord er et substantiv, ud fra ordbogen.
+int sb_ordbog() {
+
+}
+
+//returnere ordklassen, givet et ord, ud fra søgning i ordbog.
+char * get_ordklasse(char * ord){
+    
+}
+*/
+char * BinSearch(char ** ord_array, char ** word_class, char * ord){
+    char * class[100];
+    printf("\n");
+    int lower;
+    int max;
+    int midt;
+    lower = 1;
+    max = WORDS_IN_ORDBOG;
+    while (lower < max){
+        midt = (lower + max)/2;
+        
+        printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n", lower, midt, max);
+        printf("strcmp: %d\n", strcmp(ord, ord_array[midt]));
+
+
+        if ((strcmp(ord, ord_array[midt]) >= 0)){
+            printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
+            lower = midt + 1;
+        } else{
+            printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
+            max = midt;
+        }
+        printf("\n");
+
+  }
+    printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
+    
+    if (strcmp(ord, ord_array[lower - 1]) == 0){
+        printf("BinSeach: %s er på position %d\n",ord,lower);
+        return word_class[lower - 1];
+
+    }
+    //Noget der skal tjekke de omkringliggende ord er samme ord, og i så fald;
+    //Skal ordklassen sendes med: 
+    //Ordet "Under" har fx 3(4) forskellige ordklasser/betdyninger: sb, sb, adv, præp.
+
+    
+}
 
 
 
@@ -295,9 +347,9 @@ void testord(char ** ord_array, char ** class_array){
     class_array[7][2] = 'P';
     class_array[7][3] = '\0';
 
-    ord_array[8][0] = 'S';
-    ord_array[8][1] = 'I';
-    ord_array[8][2] = 'D';
+    ord_array[8][0] = 's';
+    ord_array[8][1] = 'i';
+    ord_array[8][2] = 'd';
     ord_array[8][3] = '-';
     ord_array[8][4] = 'h';
     ord_array[8][5] = 'u';
@@ -388,7 +440,7 @@ void testord(char ** ord_array, char ** class_array){
     class_array[14][4] = 'N';
     class_array[14][5] = '\0';
 
-    ord_array[15][0] = 'C';
+    ord_array[15][0] = 'c';
     ord_array[15][1] = 'h';
     ord_array[15][2] = 'r';
     ord_array[15][3] = 'i';

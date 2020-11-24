@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 #define LINE_LEN 500
-#define WORDS_COUNT 64896
+#define WORDS_COUNT 100000
+#define WORDS_IN_ORDBOG 64896
 #define CHAR_COUNT 100
 
 void arraytest();
@@ -15,16 +16,16 @@ void getArrayFromFile();
 void getWordBookClass();
 void printArray(char ** array_words, char ** array_class);
 
-
+/*
 int main(void){
     getWordBookClass();
-}
+}*/
 
 //Henter Ord og Ordklasser fra Test og Train filen.
 void getArrayFromFile(){
     //laver 2 arrays
-    char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
-    char **array_class = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
+    char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *));
+    char **array_class = (char **)malloc(WORDS_COUNT * sizeof(char *));
 
     char * fil = menu_filvalg();
 
@@ -79,78 +80,83 @@ void getArrayFromFile(){
         status = fgets(line, LINE_LEN, inp);
         i++;
     }
-
+    
     printArray(array_words, array_class);
 } 
 
 //Henter Ord og ordklasser fra Ordbogs filen
-void getWordBookClass(){
+void getWordBookClass(char ** array_words, char ** array_class){
 
-    printf("1. test\n");
+    char *fil = "Data/RO2012.opslagsord.med.homnr.og.ordklasse_sorted_2.csv";
 
-    //laver 2 arrays
-    char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
-    char **array_class = (char **)malloc(WORDS_COUNT * sizeof(char *)); 
-
-    char *fil = "Data/RO2012.opslagsord.med.homnr.og.ordklasse.txt";
-
-
-    printf("2. test\n");
     //Laver Array med Malloc
-    for (int i = 0; i < WORDS_COUNT; i++){
+    for (int i = 0; i < WORDS_IN_ORDBOG; i++){
         array_words[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
         array_class[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
 
-    printf("3. test\n");
     //Åbner fil
     FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
     char *status = fgets(line, LINE_LEN, inp);
     
-    printf("4. test\n");
     int i = 0;
-    while(i < WORDS_COUNT && status != 0){
-        printf("5. test\n");
+    while(i < WORDS_IN_ORDBOG && status != 0){
+
+
         //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
         }
-        printf("6. test\n");
+
         //Læser alle ord fra linjen ind i Token, som nu består af flere ord.
+
+        if (line[strlen(line)-1] == ';'){
+            status = fgets(line, LINE_LEN, inp);
+            i++;
+            continue;
+        }
+
+        //her crasher den -
+        //printf(" line is: %s\n", line);
         char *token = strtok(line, ";");
 
+
+        //printf("%s ; ", token);
         //Tjekker om Token er tom eller en kommentar
         if(token == NULL){
             status = fgets(line, LINE_LEN, inp);
             continue;
         }
-        printf("7. test\n");
+
         //læser ordet fra Token og sætter det ind i Ord array
         int f;
         for(f = 0; f < (int)strlen(token); f++){
             array_words[i][f] = token[f];
         }
         array_words[i][f] = '\0';
-        printf("8. test\n");
+
         //skipper et ord i token.
         token = strtok(NULL, "\r");
-        printf("9. test\n");
-        printf("%s", token);
+
+        
         if(token != NULL){
             for(f = 0; f < (int)strlen(token); f++){
                 array_class[i][f] = token[f];
             }
-            array_class[i][f] = '\0';
-            printf("10. test\n");
             //Læser ny linje ind i status
         }
+        //printf("%s\n", token);
+        
         
         status = fgets(line, LINE_LEN, inp);
+        //printf("%d", i);
         i++;
+        
     }
+    
 
-    printArray(array_words, array_class);
+    //printArray(array_words, array_class);
 } 
 
 void printArray(char ** array_words, char ** array_class){

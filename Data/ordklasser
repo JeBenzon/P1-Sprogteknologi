@@ -1,0 +1,32 @@
+NUM (talord) feks en, to (talord)
+ADJ (adjektiv, tillægsord) (adj)
+NOUN (navneord, substantiv) (sb)
+PROPN (egennavn, substantiv) (prop)
+VERB (udsangsord) (vb)
+ADV  (biord)
+PUNCT (tegn)
+CCONJ (konj)
+SCONJ (konj)
+AUX (hjælpe verber/modalverber)(vb)
+ADP (praep)
+DET (artikel)
+PRON (pron)
+INTJ (lydord)
+PART (konj,infinitivensmarke)
+
+
+
+11 ordklasser (Retskrivningsordbogen)
+===
+substantiv(navneord),   (sb)
+adjektiv(tillægsord),   (adj)
+artikler(kendeord),     (artikel)
+pronomener(stedord),    (pron)
+talord,                 (talord)
+verber(udsagnsord),     (vb)
+adverbier(biord),       (adv)
+konjuntioner(bindeord), (konj)
+præpositioner(forholdsord), (praep)
+udråbsord,              (udraabsord)
+lydord                  (lydord)
+===
