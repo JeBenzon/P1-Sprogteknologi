@@ -314,48 +314,7 @@ int ver_correct_ending(char *ord) {
     return 0;
 }
 
-/*
-int ver_correct_ending(char *ord) {
-    char ende[] = "ende";
-    char tes[] = "tes";
-    char ede[] = "ede";
-    char es[] = "es";
-    char te[] = "te";
-    char et[] = "et";
-    char de[] = "de";
-    char er[] = "er";
-    char t[] = "t";
-    char r[] = "r";
-    char e[] = "e";
-    
-    if((str_ending_compare(ord, ende) == 0)) {        
-        return 1;
-    } else if((str_ending_compare(ord, tes) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, ede) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, es) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, te) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, et) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, de) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, er) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, t) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, r) == 0)) {
-        return 1;
-    } else if((str_ending_compare(ord, e) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }
 
-}
-*/
 
 int adverbier(char *ord) {
     if(adv_correct_ending(ord) == 1) {
@@ -397,35 +356,16 @@ int artikler(char *ord) {
 }
 
 int is_article(char *ord) {
-    char article[5][] = {"den", "det", "en", "et", "de"};
-    /*char den[] = "den";
-    char det[] = "det";
-    char en[] = "en";
-    char et[] = "et";
-    char de[] = "de";*/
+    char article[5][6] = {"den", "det", "en", "et", "de"};
     
     for (int i = 0; i < sizeof(article); i++)
     {
-        if(strcmp(ord, article[i]) == 0)
+        if(strcmp(ord, article[i]) == 0) // strcmp(ene_string, anden_string) tjekker om første-string tilsvarer anden-string 
+        {
             return 1;
         }
     }
     
-
-    /*if((strcmp(ord, den) == 0)) {                                      // strcmp(ene_string, anden_string) tjekker om første-string tilsvarer anden-string 
-        return 1;
-    } else if((strcmp(ord, det) == 0)) {
-        return 1;
-    } else if((strcmp(ord, en) == 0)) {
-        return 1;
-    } else if((strcmp(ord, et) == 0)) {
-        return 1;
-    } else if((strcmp(ord, de) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }*/
-
     return 0;
 }
 
@@ -442,34 +382,9 @@ int konjunktioner(char *ord) {
 
 int is_conjunction(char *ord) {
     char sideordnende[5][8] = {"eller", "for", "men", "saa", "og"};
-    /* sideordnende
-    char eller[] = "eller";
-    char o_for[] = "for";
-    char men[] = "men";
-    char saa[] = "saa"; // betydning "derfor"
-    char og[] = "og";*/
-
     char underordnende[12][6] = {"hvorfor", "hvordan", "hvilken", "hvilket", "fordi", "hvor", "hvad", "hvis", "naar", "mens", "der", "som"};
-    /*underordnende
-    char hvorfor[] = "hvorfor";
-    char hvordan[] = "hvordan";
-    char hvilken[] = "hvilken";
-    char hvilket[] = "hvilket";
-    char fordi[] = "fordi";
-    char hvor[] = "hvor";
-    char hvad[] = "hvad";
-    char hvis[] = "hvis";
-    char naar[] = "naar";
-    char mens[] = "mens";
-    char der[] = "der";
-    char som[] = "som"; */
-
     char saa[3][6] = {"om", "at", "da"};
-    /* char saa[] = "saa"; // betydning "saadan at"
-    char om[] = "om";
-    char at[] = "at";
-    char da[] = "da";*/
-
+   
     for (int i = 0; i < sizeof(sideordnende); i++)
     {
         if (strcmp(ord, sideordnende[i]) == 0)
@@ -498,51 +413,6 @@ int is_conjunction(char *ord) {
     }
     
     return 0;
-    
-    /*
-    if((strcmp(ord, eller) == 0)) { 
-        return 1;
-    } else if((strcmp(ord, o_for) == 0)) {
-        return 1;
-    } else if((strcmp(ord, men) == 0)) {
-        return 1;
-    } else if((strcmp(ord, saa) == 0)) {
-        return 1;
-    } else if((strcmp(ord, og) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvorfor) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvordan) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvilken) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvilket) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fordi) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvor) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvad) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvis) == 0)) {
-        return 1;
-    } else if((strcmp(ord, naar) == 0)) {
-        return 1;
-    } else if((strcmp(ord, mens) == 0)) {
-        return 1;
-    } else if((strcmp(ord, der) == 0)) {
-        return 1;
-    } else if((strcmp(ord, som) == 0)) {
-        return 1;
-    } else if((strcmp(ord, om) == 0)) {
-        return 1;
-    }  else if((strcmp(ord, at) == 0)) {
-        return 1;
-    } else if((strcmp(ord, da) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }*/
 }
 
 int praepositioner(char *ord) {
@@ -557,33 +427,6 @@ int praepositioner(char *ord) {
 
 int is_preposition(char *ord) {
     char preposition[26][14] = {"omkring", "mellem", "gennem", "under", "efter", "foran", "forbi", "inden", "langs", "over", "imod", "uden", "foer", "til", "fra", "ved", "for", "med", "hos", "mod", "bag", "paa", "om", "af", "ad", "i"};
-    /*
-    char omkring[] = "omkring";
-    char mellem[] = "mellem";
-    char gennem[] = "gennem";
-    char under[] = "under";
-    char efter[] = "efter";
-    char foran[] = "foran";
-    char forbi[] = "forbi";
-    char inden[] = "inden";
-    char langs[] = "langs";
-    char over[] = "over";
-    char imod[] = "imod";
-    char uden[] = "uden";
-    char foer[] = "foer";
-    char til[] = "til";
-    char fra[] = "fra";
-    char ved[] = "ved";
-    char o_for[] = "for";
-    char med[] = "med";
-    char hos[] = "hos";
-    char mod[] = "mod";
-    char bag[] = "bag";
-    char paa[] = "paa";
-    char om[] = "om";
-    char af[] = "af";
-    char ad[] = "ad";
-    char i[] = "i";   */
 
     for (int i = 0; i < sizeof(preposition); i++)
     {
@@ -595,62 +438,6 @@ int is_preposition(char *ord) {
     }
     
     return 0;
-    /*
-    if((strcmp(ord, omkring) == 0)) { 
-        return 1;
-    } else if((strcmp(ord, mellem) == 0)) {
-        return 1;
-    } else if((strcmp(ord, gennem) == 0)) {
-        return 1;
-    } else if((strcmp(ord, under) == 0)) {
-        return 1;
-    } else if((strcmp(ord, efter) == 0)) {
-        return 1;
-    } else if((strcmp(ord, foran) == 0)) {
-        return 1;
-    } else if((strcmp(ord, forbi) == 0)) {
-        return 1;
-    } else if((strcmp(ord, inden) == 0)) {
-        return 1;
-    } else if((strcmp(ord, langs) == 0)) {
-        return 1;
-    } else if((strcmp(ord, over) == 0)) {
-        return 1;
-    } else if((strcmp(ord, imod) == 0)) {
-        return 1;
-    } else if((strcmp(ord, uden) == 0)) {
-        return 1;
-    } else if((strcmp(ord, foer) == 0)) {
-        return 1;
-    } else if((strcmp(ord, til) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fra) == 0)) {
-        return 1;
-    } else if((strcmp(ord, ved) == 0)) {
-        return 1;
-    } else if((strcmp(ord, o_for) == 0)) {
-        return 1;
-    } else if((strcmp(ord, med) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hos) == 0)) {
-        return 1;
-    } else if((strcmp(ord, mod) == 0)) {
-        return 1;
-    } else if((strcmp(ord, bag) == 0)) {
-        return 1;
-    } else if((strcmp(ord, paa) == 0)) {
-        return 1;
-    } else if((strcmp(ord, om) == 0)) {
-        return 1;
-    } else if((strcmp(ord, af) == 0)) {
-        return 1;
-    }  else if((strcmp(ord, ad) == 0)) {
-        return 1;
-    } else if((strcmp(ord, i) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }*/
 }
 
 int udraabsord(char *ord) {
@@ -665,23 +452,6 @@ int udraabsord(char *ord) {
 
 int is_yelling(char *ord) {
     char yelling[17][9] = {"tillykke", "fandens", "satans", "farvel", "barvo", "fuck", "lort", "roev", "hej", "nej", "aah", "ja", "av", "wow", "shh", "hmm", "ih"};
-    /*char tillykke[] = "tillykke";
-    char fandens[] = "fandens";
-    char satans[] = "satans";
-    char farvel[] = "farvel";
-    char bravo[] = "bravo";
-    char fuck[] = "fuck";
-    char lort[] = "lort";
-    char roev[] = "roev";
-    char hej[] = "hej";
-    char nej[] = "nej";
-    char aah[] = "aah";
-    char ja[] = "ja";
-    char av[] = "av";
-    char wow[] = "wow";
-    char shh[] = "shh";
-    char hmm[] = "hmm";
-    char ih[] = "ih";*/
 
     for (int i = 0; i < sizeof(yelling); i++)
     {
@@ -693,42 +463,6 @@ int is_yelling(char *ord) {
     }
     
     return 0;
-    /*
-    if((strcmp(ord, tillykke) == 0)) {                                   
-        return 1;
-    } else if((strcmp(ord, fandens) == 0)) {
-        return 1;
-    } else if((strcmp(ord, satans) == 0)) {
-        return 1;
-    } else if((strcmp(ord, farvel) == 0)) {
-        return 1;
-    } else if((strcmp(ord, bravo) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fuck) == 0)) {
-        return 1;
-    } else if((strcmp(ord, lort) == 0)) {
-        return 1;
-    } else if((strcmp(ord, roev) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hej) == 0)) {
-        return 1;
-    } else if((strcmp(ord, nej) == 0)) {
-        return 1;
-    } else if((strcmp(ord, aah) == 0)) {
-        return 1;
-    } else if((strcmp(ord, av) == 0)) {
-        return 1;
-    } else if((strcmp(ord, wow) == 0)) {
-        return 1;
-    } else if((strcmp(ord, shh) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hmm) == 0)) {
-        return 1;
-    } else if((strcmp(ord, ih) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }*/
 }
 
 int lydord(char *ord) {
@@ -743,15 +477,6 @@ int lydord(char *ord) {
 
 int is_sound(char *ord) {
     char sound[9][11] = {"dingeling", "kykliky", "pladask", "hvisle", "bipper", "miav", "atju", "muh", "bip"};
-    /*char dingeling[] = "dingeling";
-    char kykliky[] = "kykliky";
-    char pladask[] = "pladask";
-    char hvisle[] = "hvisle";
-    char bipper[] = "bipper";
-    char miav[] = "miav";
-    char atju[] = "atju";
-    char muh[] = "muh";
-    char bip[] = "bip";*/
 
     for (int i = 0; i < sizeof(sound); i++)
     {
@@ -763,28 +488,6 @@ int is_sound(char *ord) {
     }
     
     return 0;
-    /*
-    if((strcmp(ord, dingeling) == 0)) {                                   
-        return 1;
-    } else if((strcmp(ord, kykliky) == 0)) {
-        return 1;
-    } else if((strcmp(ord, pladask) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hvisle) == 0)) {
-        return 1;
-    } else if((strcmp(ord, bipper) == 0)) {
-        return 1;
-    } else if((strcmp(ord, miav) == 0)) {
-        return 1;
-    } else if((strcmp(ord, atju) == 0)) {
-        return 1;
-    } else if((strcmp(ord, muh) == 0)) {
-        return 1;
-    } else if((strcmp(ord, bip) == 0)) {
-        return 1;
-    } else {
-        return 0;
-    }*/
 }
 
 int talord(char *ord) {
@@ -798,164 +501,33 @@ int talord(char *ord) {
 }
 
 int cmp_talord(char *ord) {
-    char talord[][] = {"nul", "en", "to", "tre", "fire", "fem", "seks", "syv", "otte", "ni", "ti", "elleve", "tolv", ""}
-    char en[] = "en";
-    char to[] = "to";
-    char tre[] = "tre";
-    char fire[] = "fire";
-    char fem[] = "fem";
-    char seks[] = "seks";
-    char syv[] = "syv";
-    char otte[] = "otte";
-    char ni[] = "ni";
-    char ti[] = "ti";
-    char elleve[] = "elleve";
-    char tolv[] = "tolv";
-    char tretten[] = "tretten";
-    char fjorten[] = "fjorten";
-    char femten[] = "femten";
-    char seksten[] = "seksten";
-    char sytten[] = "sytten";
-    char atten[] = "atten";
-    char nitten[] = "nitten";
-    char tyve[] = "tyve";
-    char tredive[] = "tredive";
-    char fyrre[] = "fyrre";
-    char halvtreds[] = "halvtreds";
-    char tres[] = "tres";
-    char treds[] = "treds";
-    char halvfjerds[] = "halvfjerds";
-    char firs[] = "firs";
-    char halvfems[] = "halvfems";
-    char hundred[] = "hundred";
-    char hundrede[] = "hundrede";
-    char tusind[] = "tusind";
-    char tusinde[] = "tusinde";
+    char talord[33][9] = {"nul", "en", "to", "tre", "fire", "fem", "seks", "syv", "otte", "ni", "ti", "elleve", "tolv", "tretten", "fjorten", "femten", "seksten", "sytten", "atten", "nitten", "tyve", "tredive", "fyrre", "halvtreds", "tres", "treds", "halvfjerds", "firs", "halvfems", "hundred", "hundrede", "tusind", "tudsinde"};
 
-    if((strcmp(ord, en) == 0)) { 
-        return 1;
-    } else if((strcmp(ord, to) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tre) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fire) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fem) == 0)) {
-        return 1;
-    } else if((strcmp(ord, seks) == 0)) {
-        return 1;
-    } else if((strcmp(ord, syv) == 0)) {
-        return 1;
-    } else if((strcmp(ord, otte) == 0)) {
-        return 1;
-    } else if((strcmp(ord, ni) == 0)) {
-        return 1;
-    } else if((strcmp(ord, ti) == 0)) {
-        return 1;
-    } else if((strcmp(ord, elleve) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tolv) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tretten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fjorten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, femten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, seksten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, sytten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, atten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, nitten) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tyve) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tredive) == 0)) {
-        return 1;
-    } else if((strcmp(ord, fyrre) == 0)) {
-        return 1;
-    } else if((strcmp(ord, halvtreds) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tres) == 0)) {
-        return 1;
-    } else if((strcmp(ord, treds) == 0)) {
-        return 1;
-    } else if((strcmp(ord, halvfjerds) == 0)) {
-        return 1;
-    } else if((strcmp(ord, firs) == 0)) {
-        return 1;
-    } else if((strcmp(ord, halvfems) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hundred) == 0)) {
-        return 1;
-    } else if((strcmp(ord, hundrede) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tusind) == 0)) {
-        return 1;
-    } else if((strcmp(ord, tusinde) == 0)) {
-        return 1;
-    } else {
-        return 0;
+    for (int i = 0; i < sizeof(talord); i++)
+    {
+        if (strcmp(ord, talord[i]) == 0)
+        {
+            return 1;
+        }
+        
     }
+    
+    return 0;
 }
 
 int str_talord(char *ord) {
-    char enog[] = "enog";
-    char toog[] = "toog";
-    char treog[] = "treog";
-    char fireog[] = "fireog";
-    char femog[] = "femog";
-    char seksog[] = "seksog";
-    char syvog[] = "syvog";
-    char otteog[] = "otteog";
-    char niog[] = "niog";
-    char hundred[] = "hundred";
-    char hundrede[] = "hundrede";
-    char tusind[] = "tusind";
-    char tusinde[] = "tusinde";
-    /* Sikkert udnoedvendigt, men kan ogsaa compare med disse strings for oeget praecition
-    char tyve[] = "tyve";
-    char tredive[] = "tredive";
-    char fyrre[] = "fyrre";
-    char halvtreds[] = "halvtreds";
-    char tres[] = "tres";
-    char treds[] = "treds";
-    char halvfjerds[] = "halvfjerds";
-    char firs[] = "firs";
-    char halvfems[] = "halvfems";
-    */
+    char tal_ord[22][8] = {"enog", "toog", "treog", "fireog", "femog", "seksog", "syvog", "otteog", "niog", "hundred", "hundrede", "tusind", "tusinde", "tyve", "tredive", "fyrre", "halvtreds", "tres", "treds", "halvfjerds", "firs", "halvfems"};
 
-    if(strstr(ord, enog)) {
-        return 1;
-    } else if(strstr(ord, toog)) {
-        return 1;
-    } else if(strstr(ord, treog)) {
-        return 1;
-    } else if(strstr(ord, fireog)) {
-        return 1;
-    } else if(strstr(ord, femog)) {
-        return 1;
-    } else if(strstr(ord, seksog)) {
-        return 1;
-    } else if(strstr(ord, syvog)) {
-        return 1;
-    } else if(strstr(ord, otteog)) {
-        return 1;
-    } else if(strstr(ord, niog)) {
-        return 1;
-    } else if(strstr(ord, hundred)) {
-        return 1;
-    } else if(strstr(ord, hundrede)) {
-        return 1;
-    } else if(strstr(ord, tusind)) {
-        return 1;
-    } else if(strstr(ord, tusinde)) {
-        return 1;
-    } else {
-        return 0;
-    }
+   for (int i = 0; i < sizeof(tal_ord); i++)
+   {
+       if (strstr(ord, tal_ord[i]))
+       {
+           return 1;
+       }
+       
+   }
+
+    return 0;
 }
 
 
