@@ -49,6 +49,8 @@ int talord(char *ord); // talord
 int cmp_talord(char *ord);
 int str_talord(char *ord);
 
+int pronomener(char *ord);
+int is_pronomener(char *ord);
 
 // int pronomener(char *ord); // stedord
 
@@ -85,6 +87,8 @@ int main(void){
 
     talord(ord_array[21]);
     
+    pronomener(ord_array[2]);
+
     printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
 
@@ -528,6 +532,49 @@ int str_talord(char *ord) {
    }
 
     return 0;
+}
+
+int pronomener(char *ord) {
+    
+    if(is_pronomener(ord) == 1) {
+        printf("pronomener er opfyldt\n\n");
+    } else {
+        printf("pronomener er ikke opfyldt\n\n");
+    }
+    return 0;
+}
+
+int is_pronomener(char *ord){
+    char personlige[16][5] = {"jeg", "du", "han", "hun", "det", "den", "vi", "I", "de", "mig", "dig", "Dem", "ham", "hende", "os", "Jer", "dem"};
+    char ejestedord[16][6] = {"min", "mit", "mine", "din", "dit", "dine", "hans", "hendes", "dens", "dets", "vores", "jeres", "deres", "sin", "sit", "sine"};
+    char henvisende[2][6] = {"der", "som"};
+
+    for (int i = 0; i < sizeof(personlige); i++)
+    {
+        if (strcmp(ord, personlige[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+    
+    for (int i = 0; i < sizeof(ejestedord); i++)
+    {
+        if (strcmp(ord, ejestedord[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
+
+     for (int i = 0; i < sizeof(henvisende); i++)
+    {
+        if (strcmp(ord, henvisende[i]) == 0)
+        {
+            return 1;
+        }
+        
+    }
 }
 
 
