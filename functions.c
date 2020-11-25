@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WORDS_IN_ORDBOG 300
+#define WORDS_IN_ORDBOG 64896
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 #define SUB_END_COUNT 9
@@ -53,12 +53,12 @@ int talord(char *ord);  // talord
 int cmp_talord(char *ord);
 int str_talord(char *ord);
 
-int pronomener(char *ord);
+int pronomener(char *ord); // stedord 
 int is_pronomener(char *ord);
 
-char *BinSearch(char **ord_array, char **word_class, char *ord);
+char * BinSearch(char ** ord_array, char ** word_class, char * ord);
 
-// int pronomener(char *ord); // stedord
+
 
 void testord(char **ord_array, char **class_array);
 
@@ -437,45 +437,82 @@ int is_pronomener(char *ord) {
     return 0;
 }
 
-char *BinSearch(char **ord_array, char **word_class, char *ord) {
-    // char * class[100];
-    printf("\n");
+char * BinSearch(char ** ord_array, char ** word_class, char * ord){
+    char *class = (char *)malloc(CHAR_COUNT*sizeof(char));
+    //printf("\n");
     int lower;
     int max;
     int midt;
     lower = 1;
     max = WORDS_IN_ORDBOG;
     while (lower < max){
-        midt = (lower + max) / 2;
-
+        midt = (lower + max)/2;
+        
         //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n", lower, midt, max);
         //printf("strcmp: %d\n", strcmp(ord, ord_array[midt]));
 
-        if ((strcmp(ord, ord_array[midt]) >= 0)) {
+
+        if ((strcmp(ord, ord_array[midt]) >= 0)){
             //printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
             lower = midt + 1;
-        } else {
+        } else{
             //printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
             max = midt;
         }
         //printf("\n");
-    }
-    //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
 
-    if(strcmp(ord, ord_array[lower - 1]) == 0) {
-        printf("BinSeach: %s er på position %d\n", ord, lower);
-        return word_class[lower - 1];
+  }
+    //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
+    
+    //Tjekker om omkringliggende ord matcher, det vi leder efter og tilføjer det til class
+    int x = midt - 5;
+    int y = midt + 5;
+    if (midt <= 5){
+        x = 0;
+        y = x + 9;
+    } else if (midt >= WORDS_IN_ORDBOG - 5){
+        y = WORDS_IN_ORDBOG;
+        x = WORDS_IN_ORDBOG - 10;
     }
-    // Noget der skal tjekke de omkringliggende ord er samme ord, og i så fald;
-    // Skal ordklassen sendes med:
-    // Ordet "Under" har fx 3(4) forskellige ordklasser/betdyninger: sb, sb,
-    // adv, præp.
+
+    strcat(class,ord);
+    strcat(class,";");
+    //printf("Tjekker for om der er flere ord, med anden ordklasse\n");
+    while (x != y){
+        if (strcmp(ord, ord_array[x]) == 0){
+            //printf("Ordet på plads %d matcher!\n%s og %s\n",x ,ord , ord_array[x]);
+            //printf("Tilføjer ordklassen til 'class'-arrayet\n");
+            strcat(class,word_class[x]);
+            strcat(class,";");
+            x++;
+        } else {
+            //printf("Ordet på plads %d matcher ikke!\n%s og %s\n",x ,ord , ord_array[x]);
+            x++;
+        }
+ 
+    }
+    //printf("Class er %s\n", class);
+
+    if (strcmp(ord, ord_array[lower - 1]) == 0){
+        //printf("BinSeach: %s er på position %d\n",ord,lower);
+        return class;
+    }
     return "";
 }
 
-void testord(char **ord_array, char **class_array) {
-    for (int i = 0; i < WORDS_COUNT; i++) {
-        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
+
+// funktion for endelse(artikel) 
+// funktion for artikel - tjek forrige ord
+// funktion for første ord i sætning - tjek forrige ord for punktum
+// funktion for ordklassesandsynlighed - tjek returværdier
+
+
+
+
+void testord(char ** ord_array, char ** class_array){
+
+    for (int i = 0; i < WORDS_COUNT; i++){
+        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
         class_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
     }
     ord_array[0][0] = 'P';
