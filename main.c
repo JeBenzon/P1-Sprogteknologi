@@ -5,7 +5,7 @@
 #include "input.c"
 #include "functions.c"
 
-#define WORDS_COUNT 100000
+#define WORDS_COUNT 80400
 #define WORDS_IN_ORDBOG 64894
 int main(void){
 
@@ -17,8 +17,8 @@ int main(void){
     
     char **output_array_class_guesstimate = (char **)malloc(WORDS_COUNT * sizeof(char *));
 
-    //getArrayFromFile(input_array_words, input_array_class);
-    getWordBookClass(book_array_words, book_array_class);
+    getArrayFromFile(input_array_words, input_array_class);
+    //getWordBookClass(book_array_words, book_array_class);
     
     //kan finde 1 ordklasse, men ikke flere. 
     char * ord = BinSearch(book_array_words, book_array_class, "aegte");

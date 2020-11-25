@@ -5,10 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define LINE_LEN 500
-#define WORDS_COUNT 100000
+#define LINE_LEN 1000
+#define WORDS_COUNT 80400
 #define WORDS_IN_ORDBOG 64894
-#define CHAR_COUNT 100
+#define CHAR_COUNT 500
 
 void arraytest();
 char * menu_filvalg();
@@ -31,7 +31,7 @@ void getArrayFromFile(char ** array_words, char ** array_class){
         array_words[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
         array_class[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
-    printf("1\n");
+printf("1\n");
     //Åbner fil
     FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
@@ -39,32 +39,36 @@ void getArrayFromFile(char ** array_words, char ** array_class){
     
     int i = 0;
     while(i < WORDS_COUNT && status != 0){
-        printf("2\n");
+printf("2\n");
         //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
         }
-
+printf("2,1\n");
+        
         //Læser alle ord fra linjen ind i Token, som nu består af flere ord.
         char *token = strtok(line, "\t");
-
+printf("2,2\n");
         //Tjekker om Token er tom eller en kommentar
         if(token == NULL || token[0] == '#'){
+            printf("worked");
             status = fgets(line, LINE_LEN, inp);
+            
             continue;
         }
-        printf("3\n");
+printf("3\n");
         //skipper et ord i token.
         token = strtok(NULL, "\t");
- 
+printf("3,1\n");
         //læser ordet fra Token og sætter det ind i Ord array
         int f;
         for(f = 0; f < (int)strlen(token); f++){
             array_words[i][f] = token[f];
         }
         array_words[i][f] = '\0';
-        printf("4\n");
+printf("4\n");
         //skipper et ord i token.
+        printf("%s\n",token);
         token = strtok(NULL, "\t");
         token = strtok(NULL, "\t");
 
@@ -72,15 +76,15 @@ void getArrayFromFile(char ** array_words, char ** array_class){
             array_class[i][f] = token[f];
         }
         array_class[i][f] = '\0';
-        printf("5\n");
-        printf("i er = %d\n", i);
-        printf("%s\n",token);
+printf("5\n");
+printf("i er = %d\n", i);
+printf("%s\n",token);
         //Læser ny linje ind i status
         status = fgets(line, LINE_LEN, inp);
         i++;
     }
     
-    //printArray(array_words, array_class);
+    printArray(array_words, array_class);
 } 
 
 //Henter Ord og ordklasser fra Ordbogs filen
