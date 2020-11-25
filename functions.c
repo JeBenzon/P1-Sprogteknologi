@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WORDS_IN_ORDBOG 64894
+#define WORDS_IN_ORDBOG 64896
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 #define SUB_END_COUNT 9
@@ -29,7 +29,7 @@ int adjektiver(char *ord);  // tillaegsord
 int adj_correct_ending(char *ord);
 
 int verber(char *ord);  // udsagnsord
-int ver_correct_ending(char *ord);
+int ver_correct_ending(char *ord);  
 
 int adverbier(char *ord);  // biord
 int adv_correct_ending(char *ord);
@@ -57,6 +57,8 @@ int pronomener(char *ord); // stedord
 int is_pronomener(char *ord);
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord);
+
+char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord);
 
 
 
@@ -97,6 +99,28 @@ int main(void){
     printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
 */
+
+char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
+    
+    char * ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
+    //printf("%s\n", ordbogs_class);
+    ordbogs_class[strlen(ordbogs_class)-1] = '\0';
+    printf("%s\n", ordbogs_class);
+    
+    char * token = strtok(ordbogs_class, ",");
+    char * midlertidig = token;
+    printf("midertidig: %s\n", midlertidig);
+    char * token2 = strtok(ordbogs_class, ";");
+    printf("Token: %s\n",  token2);
+    token = strtok(NULL, "\r");
+    printf("Token: %s\n",  token2);
+    token = strtok(NULL, "\r");
+    printf("Token: %s\n",  token2);
+    token = strtok(NULL, "\r;");
+    printf("Token: %s\n",  token2);
+
+    return "";
+}
 
 int str_ending_compare(char *ord, char *ending) {
     int c;
@@ -475,8 +499,8 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
         x = WORDS_IN_ORDBOG - 10;
     }
 
-    strcat(class,ord);
-    strcat(class,";");
+    //strcat(class,ord);
+    //strcat(class,";");
     //printf("Tjekker for om der er flere ord, med anden ordklasse\n");
     while (x != y){
         if (strcmp(ord, ord_array[x]) == 0){

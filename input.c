@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define LINE_LEN 1000
-#define WORDS_COUNT 80400
+#define WORDS_COUNT 70000
 #define WORDS_IN_ORDBOG 64894
 #define CHAR_COUNT 500
 
@@ -108,7 +108,7 @@ void getWordBookClass(char ** array_words, char ** array_class){
 
     int i = 0;
     while(i < WORDS_IN_ORDBOG && status != 0){
-        printf("i: %d ; ", i);
+        //printf("i: %d ; ", i);
         //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
@@ -124,7 +124,7 @@ void getWordBookClass(char ** array_words, char ** array_class){
         char *token = strtok(line, ";");
 
 
-        printf("%s ; ", token);
+        //printf("%s ; ", token);
         //Tjekker om Token er tom eller en kommentar
         if(token == NULL){
             status = fgets(line, LINE_LEN, inp);
@@ -148,7 +148,7 @@ void getWordBookClass(char ** array_words, char ** array_class){
             }
             //Læser ny linje ind i status
         }
-        printf("%s\n", token);
+        //printf("%s\n", token);
         
         
         status = fgets(line, LINE_LEN, inp);
