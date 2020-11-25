@@ -1,12 +1,12 @@
-//This is where we start writing out functions
-//Members who have worked on this file: 
+// This is where we start writing out functions
+// Members who have worked on this file:
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define WORDS_IN_ORDBOG 64896
+#define WORDS_IN_ORDBOG 300
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 #define SUB_END_COUNT 9
@@ -18,59 +18,57 @@
 #define ADV_END_COUNT 5
 #define ADV_END_LEN 4
 
-
 int str_ending_compare(char *ord, char *ending);
-int capitol_to_lowercase(char *ord);
+char *capitol_to_lowercase(char *ord);
 
-int substantiver(char *ord); // navneord
+int substantiver(char *ord);  // navneord
 int is_capitol_letter(char first_letter);
 int sub_correct_ending(char *ord);
 
-int adjektiver(char *ord); // tillaegsord
+int adjektiver(char *ord);  // tillaegsord
 int adj_correct_ending(char *ord);
 
-int verber(char *ord); // udsagnsord
+int verber(char *ord);  // udsagnsord
 int ver_correct_ending(char *ord);
 
-int adverbier(char *ord); // biord
+int adverbier(char *ord);  // biord
 int adv_correct_ending(char *ord);
 
-int artikler(char *ord); // kendeord
+int artikler(char *ord);  // kendeord
 int is_article(char *ord);
 
-int konjunktioner(char *ord); // bindeord
+int konjunktioner(char *ord);  // bindeord
 int is_conjunction(char *ord);
 
-int praepositioner(char *ord); // forholdsord
+int praepositioner(char *ord);  // forholdsord
 int is_preposition(char *ord);
 
-int udraabsord(char *ord); // udraabsord
+int udraabsord(char *ord);  // udraabsord
 int is_yelling(char *ord);
 
-int lydord(char *ord); // lydord
+int lydord(char *ord);  // lydord
 int is_sound(char *ord);
 
-int talord(char *ord); // talord
+int talord(char *ord);  // talord
 int cmp_talord(char *ord);
 int str_talord(char *ord);
 
 int pronomener(char *ord);
 int is_pronomener(char *ord);
 
-char * BinSearch(char ** ord_array, char ** word_class, char * ord);
+char *BinSearch(char **ord_array, char **word_class, char *ord);
 
 // int pronomener(char *ord); // stedord
 
+void testord(char **ord_array, char **class_array);
 
-void testord(char ** ord_array, char ** class_array);
-
-
+/*
 //Test main for functions
 int main(void){
     char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **vores_klaase_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
-    
+
 
     testord(ord_array, class_array);
 
@@ -81,7 +79,7 @@ int main(void){
     verber(ord_array[21]);
 
     adverbier(ord_array[21]);
-    
+
     artikler(ord_array[21]);
 
     konjunktioner(ord_array[21]);
@@ -93,22 +91,23 @@ int main(void){
     lydord(ord_array[21]);
 
     talord(ord_array[21]);
-    
+
     pronomener(ord_array[2]);
 
     printf(" %d", is_capitol_letter(ord_array[24][3]));
 }
+*/
 
 int str_ending_compare(char *ord, char *ending) {
     int c;
-    int result;
+    // int result;
     int ord_len = (strlen(ord) + 1);
     int ending_len = (strlen(ending) + 1);
     char ord_ending[ending_len];
 
     // printf(" %s, %s\n", ord, ending);
 
-    for(c = 1; c <= ending_len; c++) {
+    for (c = 1; c <= ending_len; c++) {
         ord_ending[ending_len - c] = ord[ord_len - c];
     }
 
@@ -120,14 +119,14 @@ int str_ending_compare(char *ord, char *ending) {
 int substantiver(char *ord) {
     printf(" %s\n\n", ord);
 
-    if(is_capitol_letter(ord[0]) == 2) {
+    if (is_capitol_letter(ord[0]) == 2) {
         printf("capitol er opfyldt\n\n");
         printf("nyt ord er %s\n\n", capitol_to_lowercase(ord));
     } else {
         printf("capitol er ikke opfyldt\n\n");
     }
 
-    if(sub_correct_ending(ord) == 1) {
+    if (sub_correct_ending(ord) == 1) {
         printf("sub_ending er opfyldt\n\n");
     } else {
         printf("sub_ending er ikke opfyldt\n\n");
@@ -136,47 +135,42 @@ int substantiver(char *ord) {
     return 0;
 }
 
-int capitol_to_lowercase(char *ord) {
+char *capitol_to_lowercase(char *ord) {
     int ord_len = strlen(ord) + 1;
     int c;
 
-    for(c = 0; c < ord_len; c++) {
+    for (c = 0; c < ord_len; c++) {
         ord[c] = tolower(ord[c]);
     }
     printf("Omskrevet ord er %s.\n", ord);
-    return 0;
+    return ord;
 }
 
 int is_capitol_letter(char first_letter) {
-
-    if(first_letter >= 'A' && first_letter <= 'Z') {
+    if (first_letter >= 'A' && first_letter <= 'Z') {
         return 2;
-    } else if(first_letter >= 'a' && first_letter <= 'z') {
+    } else if (first_letter >= 'a' && first_letter <= 'z') {
         return 1;
     } else {
         return 0;
     }
 }
 
-
 int sub_correct_ending(char *ord) {
-    int c;
-    char sub_endings[SUB_END_COUNT][SUB_END_LEN] = {"ene","ne", "er", "et", "en", "r", "s", "e"};
+    // int c;
+    char sub_endings[SUB_END_COUNT][SUB_END_LEN] = {"ene", "ne", "er", "et",
+                                                    "en",  "r",  "s",  "e"};
 
-
-    for(int c = 0; c < SUB_END_COUNT; c++) {
-        if(str_ending_compare(ord, sub_endings[c]) == 0) {
+    for (int c = 0; c < SUB_END_COUNT; c++) {
+        if (str_ending_compare(ord, sub_endings[c]) == 0) {
             return 1;
         }
     }
     return 0;
 }
 
-
-
-
 int adjektiver(char *ord) {
-    if(adj_correct_ending(ord) == 1) {
+    if (adj_correct_ending(ord) == 1) {
         printf("adj_ending er opfyldt\n\n");
     } else {
         printf("adj_ending er ikke opfyldt\n\n");
@@ -185,21 +179,20 @@ int adjektiver(char *ord) {
 }
 
 int adj_correct_ending(char *ord) {
-    int c;
-    char adj_endings[ADJ_END_COUNT][ADJ_END_LEN] = {"este","est", "ere", "st", "re", "t", "e"};
+    // int c;
+    char adj_endings[ADJ_END_COUNT][ADJ_END_LEN] = {"este", "est", "ere", "st",
+                                                    "re",   "t",   "e"};
 
-
-    for(int c = 0; c < ADJ_END_COUNT; c++) {
-        if(str_ending_compare(ord, adj_endings[c]) == 0) {
+    for (int c = 0; c < ADJ_END_COUNT; c++) {
+        if (str_ending_compare(ord, adj_endings[c]) == 0) {
             return 1;
         }
     }
     return 0;
 }
 
-
 int verber(char *ord) {
-    if(ver_correct_ending(ord) == 1) {
+    if (ver_correct_ending(ord) == 1) {
         printf("ver_ending er opfyldt\n\n");
     } else {
         printf("ver_ending er ikke opfyldt\n\n");
@@ -208,22 +201,20 @@ int verber(char *ord) {
 }
 
 int ver_correct_ending(char *ord) {
-    int c;
-    char ver_endings[VER_END_COUNT][VER_END_LEN] = {"ende","tes", "ede", "es", "te", "et", "de", "er", "t", "r", "e"};
+    // int c;
+    char ver_endings[VER_END_COUNT][VER_END_LEN] = {
+        "ende", "tes", "ede", "es", "te", "et", "de", "er", "t", "r", "e"};
 
-
-    for(int c = 0; c < VER_END_COUNT; c++) {
-        if(str_ending_compare(ord, ver_endings[c]) == 0) {
+    for (int c = 0; c < VER_END_COUNT; c++) {
+        if (str_ending_compare(ord, ver_endings[c]) == 0) {
             return 1;
         }
     }
     return 0;
 }
 
-
-
 int adverbier(char *ord) {
-    if(adv_correct_ending(ord) == 1) {
+    if (adv_correct_ending(ord) == 1) {
         printf("adv_ending er opfyldt\n\n");
     } else {
         printf("adv_ending er ikke opfyldt\n\n");
@@ -232,12 +223,11 @@ int adverbier(char *ord) {
 }
 
 int adv_correct_ending(char *ord) {
-    int c;
+    // int c;
     char adv_endings[ADV_END_COUNT][ADV_END_LEN] = {"vis", "lig", "ig", "t"};
 
-
-    for(int c = 0; c < ADV_END_COUNT; c++) {
-        if(str_ending_compare(ord, adv_endings[c]) == 0) {
+    for (int c = 0; c < ADV_END_COUNT; c++) {
+        if (str_ending_compare(ord, adv_endings[c]) == 0) {
             return 1;
         }
     }
@@ -245,78 +235,63 @@ int adv_correct_ending(char *ord) {
 }
 
 int artikler(char *ord) {
-    
-    if(is_article(ord) == 1) {
+    if (is_article(ord) == 1) {
         printf("article er opfyldt\n\n");
     } else {
         printf("article er ikke opfyldt\n\n");
     }
-    
+
     return 0;
 }
 
 int is_article(char *ord) {
     char article[5][6] = {"den", "det", "en", "et", "de"};
-    
-    for (int i = 0; i < sizeof(article); i++)
-    {
-        if(strcmp(ord, article[i]) == 0) // strcmp(ene_string, anden_string) tjekker om første-string tilsvarer anden-string 
-        {
+
+    for (int i = 0; i < (int)sizeof(article); i++) {
+        if (strcmp(ord, article[i]) ==
+            0)  // strcmp(ene_string, anden_string) tjekker om første-string
+                // tilsvarer anden-string {
             return 1;
-        }
     }
-    
     return 0;
 }
 
 int konjunktioner(char *ord) {
-    
-    if(is_conjunction(ord) == 1) {
+    if (is_conjunction(ord) == 1) {
         printf("conjunction er opfyldt\n\n");
     } else {
         printf("conjunction er ikke opfyldt\n\n");
     }
-    
     return 0;
 }
 
 int is_conjunction(char *ord) {
     char sideordnende[5][8] = {"eller", "for", "men", "saa", "og"};
-    char underordnende[12][8] = {"hvorfor", "hvordan", "hvilken", "hvilket", "fordi", "hvor", "hvad", "hvis", "naar", "mens", "der", "som"};
+    char underordnende[12][8] = {"hvorfor", "hvordan", "hvilken", "hvilket",
+                                 "fordi",   "hvor",    "hvad",    "hvis",
+                                 "naar",    "mens",    "der",     "som"};
     char saa[3][6] = {"om", "at", "da"};
-   
-    for (int i = 0; i < sizeof(sideordnende); i++)
-    {
-        if (strcmp(ord, sideordnende[i]) == 0)
-        {
-            return 1;
-        }
-        
-    }
 
-    for (int i = 0; i < sizeof(underordnende); i++)
-    {
-        if (strcmp(ord, underordnende[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(sideordnende); i++) {
+        if (strcmp(ord, sideordnende[i]) == 0) {
             return 1;
         }
-        
     }
-    
-    for (int i = 0; i < sizeof(saa); i++) {
-        if (strcmp(ord, saa[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(underordnende); i++) {
+        if (strcmp(ord, underordnende[i]) == 0) {
             return 1;
         }
-        
     }
-    
+    for (int i = 0; i < (int)sizeof(saa); i++) {
+        if (strcmp(ord, saa[i]) == 0) {
+            return 1;
+        }
+    }
     return 0;
 }
 
 int praepositioner(char *ord) {
-    
-    if(is_preposition(ord) == 1) {
+    if (is_preposition(ord) == 1) {
         printf("preposition er opfyldt\n\n");
     } else {
         printf("preposition er ikke opfyldt\n\n");
@@ -325,23 +300,22 @@ int praepositioner(char *ord) {
 }
 
 int is_preposition(char *ord) {
-    char preposition[26][14] = {"omkring", "mellem", "gennem", "under", "efter", "foran", "forbi", "inden", "langs", "over", "imod", "uden", "foer", "til", "fra", "ved", "for", "med", "hos", "mod", "bag", "paa", "om", "af", "ad", "i"};
+    char preposition[26][14] = {
+        "omkring", "mellem", "gennem", "under", "efter", "foran", "forbi",
+        "inden",   "langs",  "over",   "imod",  "uden",  "foer",  "til",
+        "fra",     "ved",    "for",    "med",   "hos",   "mod",   "bag",
+        "paa",     "om",     "af",     "ad",    "i"};
 
-    for (int i = 0; i < sizeof(preposition); i++)
-    {
-        if (strcmp(ord, preposition[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(preposition); i++) {
+        if (strcmp(ord, preposition[i]) == 0) {
             return 1;
         }
-        
     }
-    
     return 0;
 }
 
 int udraabsord(char *ord) {
-    
-    if(is_yelling(ord) == 1) {
+    if (is_yelling(ord) == 1) {
         printf("udraabsord er opfyldt\n\n");
     } else {
         printf("udraabsord er ikke opfyldt\n\n");
@@ -350,23 +324,21 @@ int udraabsord(char *ord) {
 }
 
 int is_yelling(char *ord) {
-    char yelling[17][9] = {"tillykke", "fandens", "satans", "farvel", "barvo", "fuck", "lort", "roev", "hej", "nej", "aah", "ja", "av", "wow", "shh", "hmm", "ih"};
+    char yelling[17][9] = {"tillykke", "fandens", "satans", "farvel", "barvo",
+                           "fuck",     "lort",    "roev",   "hej",    "nej",
+                           "aah",      "ja",      "av",     "wow",    "shh",
+                           "hmm",      "ih"};
 
-    for (int i = 0; i < sizeof(yelling); i++)
-    {
-        if (strcmp(ord, yelling[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(yelling); i++) {
+        if (strcmp(ord, yelling[i]) == 0) {
             return 1;
         }
-        
     }
-    
     return 0;
 }
 
 int lydord(char *ord) {
-    
-    if(is_sound(ord) == 1) {
+    if (is_sound(ord) == 1) {
         printf("lydord er opfyldt\n\n");
     } else {
         printf("lydord er ikke opfyldt\n\n");
@@ -375,23 +347,19 @@ int lydord(char *ord) {
 }
 
 int is_sound(char *ord) {
-    char sound[9][11] = {"dingeling", "kykliky", "pladask", "hvisle", "bipper", "miav", "atju", "muh", "bip"};
+    char sound[9][11] = {"dingeling", "kykliky", "pladask", "hvisle", "bipper",
+                         "miav",      "atju",    "muh",     "bip"};
 
-    for (int i = 0; i < sizeof(sound); i++)
-    {
-        if (strcmp(ord, sound[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(sound); i++) {
+        if (strcmp(ord, sound[i]) == 0) {
             return 1;
         }
-        
     }
-    
     return 0;
 }
 
 int talord(char *ord) {
-    
-    if(cmp_talord(ord) == 1 || str_talord(ord) == 1) {
+    if (cmp_talord(ord) == 1 || str_talord(ord) == 1) {
         printf("talord er opfyldt\n\n");
     } else {
         printf("talord er ikke opfyldt\n\n");
@@ -400,38 +368,39 @@ int talord(char *ord) {
 }
 
 int cmp_talord(char *ord) {
-    char talord[33][11] = {"nul", "en", "to", "tre", "fire", "fem", "seks", "syv", "otte", "ni", "ti", "elleve", "tolv", "tretten", "fjorten", "femten", "seksten", "sytten", "atten", "nitten", "tyve", "tredive", "fyrre", "halvtreds", "tres", "treds", "halvfjerds", "firs", "halvfems", "hundred", "hundrede", "tusind", "tudsinde"};
+    char talord[33][11] = {
+        "nul",      "en",      "to",         "tre",     "fire",     "fem",
+        "seks",     "syv",     "otte",       "ni",      "ti",       "elleve",
+        "tolv",     "tretten", "fjorten",    "femten",  "seksten",  "sytten",
+        "atten",    "nitten",  "tyve",       "tredive", "fyrre",    "halvtreds",
+        "tres",     "treds",   "halvfjerds", "firs",    "halvfems", "hundred",
+        "hundrede", "tusind",  "tudsinde"};
 
-    for (int i = 0; i < sizeof(talord); i++)
-    {
-        if (strcmp(ord, talord[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(talord); i++) {
+        if (strcmp(ord, talord[i]) == 0) {
             return 1;
         }
-        
     }
-    
     return 0;
 }
 
 int str_talord(char *ord) {
-    char tal_ord[22][11] = {"enog", "toog", "treog", "fireog", "femog", "seksog", "syvog", "otteog", "niog", "hundred", "hundrede", "tusind", "tusinde", "tyve", "tredive", "fyrre", "halvtreds", "tres", "treds", "halvfjerds", "firs", "halvfems"};
+    char tal_ord[22][11] = {
+        "enog",    "toog",       "treog",   "fireog",  "femog",     "seksog",
+        "syvog",   "otteog",     "niog",    "hundred", "hundrede",  "tusind",
+        "tusinde", "tyve",       "tredive", "fyrre",   "halvtreds", "tres",
+        "treds",   "halvfjerds", "firs",    "halvfems"};
 
-   for (int i = 0; i < sizeof(tal_ord); i++)
-   {
-       if (strstr(ord, tal_ord[i]))
-       {
-           return 1;
-       }
-       
-   }
-
+    for (int i = 0; i < (int)sizeof(tal_ord); i++) {
+        if (strstr(ord, tal_ord[i])) {
+            return 1;
+        }
+    }
     return 0;
 }
 
 int pronomener(char *ord) {
-    
-    if(is_pronomener(ord) == 1) {
+    if (is_pronomener(ord) == 1) {
         printf("pronomener er opfyldt\n\n");
     } else {
         printf("pronomener er ikke opfyldt\n\n");
@@ -439,42 +408,37 @@ int pronomener(char *ord) {
     return 0;
 }
 
-int is_pronomener(char *ord){
-    char personlige[18][6] = {"jeg", "du", "han", "hun", "det", "den", "vi", "i", "de", "mig", "dig", "dem", "ham", "hende", "os", "jer", "dem"};
-    char ejestedord[16][7] = {"min", "mit", "mine", "din", "dit", "dine", "hans", "hendes", "dens", "dets", "vores", "jeres", "deres", "sin", "sit", "sine"};
+int is_pronomener(char *ord) {
+    char personlige[18][6] = {"jeg", "du",    "han", "hun", "det", "den",
+                              "vi",  "i",     "de",  "mig", "dig", "dem",
+                              "ham", "hende", "os",  "jer", "dem"};
+    char ejestedord[16][7] = {
+        "min",  "mit",  "mine",  "din",   "dit",   "dine", "hans", "hendes",
+        "dens", "dets", "vores", "jeres", "deres", "sin",  "sit",  "sine"};
     char henvisende[2][6] = {"der", "som"};
 
-    for (int i = 0; i < sizeof(personlige); i++)
-    {
-        if (strcmp(ord, personlige[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(personlige); i++) {
+        if (strcmp(ord, personlige[i]) == 0) {
             return 1;
         }
-        
-    }
-    
-    for (int i = 0; i < sizeof(ejestedord); i++)
-    {
-        if (strcmp(ord, ejestedord[i]) == 0)
-        {
-            return 1;
-        }
-        
     }
 
-     for (int i = 0; i < sizeof(henvisende); i++)
-    {
-        if (strcmp(ord, henvisende[i]) == 0)
-        {
+    for (int i = 0; i < (int)sizeof(ejestedord); i++) {
+        if (strcmp(ord, ejestedord[i]) == 0) {
             return 1;
         }
-        
     }
+
+    for (int i = 0; i < (int)sizeof(henvisende); i++) {
+        if (strcmp(ord, henvisende[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
-
-char * BinSearch(char ** ord_array, char ** word_class, char * ord){
-    char * class[100];
+char *BinSearch(char **ord_array, char **word_class, char *ord) {
+    // char * class[100];
     printf("\n");
     int lower;
     int max;
@@ -482,57 +446,43 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     lower = 1;
     max = WORDS_IN_ORDBOG;
     while (lower < max){
-        midt = (lower + max)/2;
-        
-        printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n", lower, midt, max);
-        printf("strcmp: %d\n", strcmp(ord, ord_array[midt]));
+        midt = (lower + max) / 2;
 
+        //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n", lower, midt, max);
+        //printf("strcmp: %d\n", strcmp(ord, ord_array[midt]));
 
-        if ((strcmp(ord, ord_array[midt]) >= 0)){
-            printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
+        if ((strcmp(ord, ord_array[midt]) >= 0)) {
+            //printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
             lower = midt + 1;
-        } else{
-            printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
+        } else {
+            //printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
             max = midt;
         }
-        printf("\n");
-
-  }
-    printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
-    
-    if (strcmp(ord, ord_array[lower - 1]) == 0){
-        printf("BinSeach: %s er på position %d\n",ord,lower);
-        return word_class[lower - 1];
-
+        //printf("\n");
     }
-    //Noget der skal tjekke de omkringliggende ord er samme ord, og i så fald;
-    //Skal ordklassen sendes med: 
-    //Ordet "Under" har fx 3(4) forskellige ordklasser/betdyninger: sb, sb, adv, præp.
+    //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
 
-    
+    if(strcmp(ord, ord_array[lower - 1]) == 0) {
+        printf("BinSeach: %s er på position %d\n", ord, lower);
+        return word_class[lower - 1];
+    }
+    // Noget der skal tjekke de omkringliggende ord er samme ord, og i så fald;
+    // Skal ordklassen sendes med:
+    // Ordet "Under" har fx 3(4) forskellige ordklasser/betdyninger: sb, sb,
+    // adv, præp.
+    return "";
 }
 
-
-
-// funktion for endelse(artikel) 
-// funktion for artikel - tjek forrige ord
-// funktion for første ord i sætning - tjek forrige ord for punktum
-// funktion for ordklassesandsynlighed - tjek returværdier
-
-
-
-
-void testord(char ** ord_array, char ** class_array){
-
-    for (int i = 0; i < WORDS_COUNT; i++){
-        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
+void testord(char **ord_array, char **class_array) {
+    for (int i = 0; i < WORDS_COUNT; i++) {
+        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
         class_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
     }
     ord_array[0][0] = 'P';
     ord_array[0][1] = 'a';
     ord_array[0][2] = 'a';
     ord_array[0][3] = '\0';
-    
+
     class_array[0][0] = 'A';
     class_array[0][1] = 'D';
     class_array[0][2] = 'P';

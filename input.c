@@ -22,10 +22,7 @@ int main(void){
 }*/
 
 //Henter Ord og Ordklasser fra Test og Train filen.
-void getArrayFromFile(){
-    //laver 2 arrays
-    char **array_words = (char **)malloc(WORDS_COUNT * sizeof(char *));
-    char **array_class = (char **)malloc(WORDS_COUNT * sizeof(char *));
+void getArrayFromFile(char ** array_words, char ** array_class){
 
     char * fil = menu_filvalg();
 
@@ -34,7 +31,7 @@ void getArrayFromFile(){
         array_words[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
         array_class[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
     }
-
+    printf("1\n");
     //Åbner fil
     FILE *inp = fopen(fil, "r");
     char line[LINE_LEN];
@@ -42,7 +39,7 @@ void getArrayFromFile(){
     
     int i = 0;
     while(i < WORDS_COUNT && status != 0){
-
+        printf("2\n");
         //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
@@ -56,7 +53,7 @@ void getArrayFromFile(){
             status = fgets(line, LINE_LEN, inp);
             continue;
         }
-        
+        printf("3\n");
         //skipper et ord i token.
         token = strtok(NULL, "\t");
  
@@ -66,7 +63,7 @@ void getArrayFromFile(){
             array_words[i][f] = token[f];
         }
         array_words[i][f] = '\0';
-
+        printf("4\n");
         //skipper et ord i token.
         token = strtok(NULL, "\t");
         token = strtok(NULL, "\t");
@@ -75,13 +72,15 @@ void getArrayFromFile(){
             array_class[i][f] = token[f];
         }
         array_class[i][f] = '\0';
-        
+        printf("5\n");
+        printf("i er = %d\n", i);
+        printf("%s\n",token);
         //Læser ny linje ind i status
         status = fgets(line, LINE_LEN, inp);
         i++;
     }
     
-    printArray(array_words, array_class);
+    //printArray(array_words, array_class);
 } 
 
 //Henter Ord og ordklasser fra Ordbogs filen
@@ -103,21 +102,24 @@ void getWordBookClass(char ** array_words, char ** array_class){
     int i = 0;
     while(i < WORDS_IN_ORDBOG && status != 0){
 
-
         //Hvis sidste linje i line er \n så byt det ud med \0
         if (line[strlen(line) - 1] == '\n'){
             line[strlen(line) - 1] = '\0';
         }
 
-        //Læser alle ord fra linjen ind i Token, som nu består af flere ord.
-
+        //springer linje over hvis ordet ikke har en token
         if (line[strlen(line)-1] == ';'){
+            int l;
+            for(l = 0; l < (int)strlen(line)-1; l++){
+            array_words[i][l] = line[l];
+            }
+            array_words[i][l] = '\0';
+
             status = fgets(line, LINE_LEN, inp);
             i++;
             continue;
         }
 
-        //her crasher den -
         //printf(" line is: %s\n", line);
         char *token = strtok(line, ";");
 
