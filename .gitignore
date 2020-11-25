@@ -4,9 +4,9 @@ input.exe
 main
 main.exe
 
-function
-function.c
+functions
+functions.exe
 
-functions
-functions
+.vscode/*
+
 .DS_Store
