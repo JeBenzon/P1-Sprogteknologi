@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WORDS_IN_ORDBOG 64896
+#define WORDS_IN_ORDBOG 64894
 #define WORDS_COUNT 300
 #define CHAR_COUNT 50
 #define SUB_END_COUNT 9
