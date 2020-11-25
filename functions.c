@@ -65,7 +65,7 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord);
 void testord(char ** ord_array, char ** class_array);
 
 
-//Test main for functions
+/*//Test main for functions
 int main(void){
     char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
     char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
@@ -97,7 +97,7 @@ int main(void){
     pronomener(ord_array[2]);
 
     printf(" %d", is_capitol_letter(ord_array[24][3]));
-}
+}*/
 
 int str_ending_compare(char *ord, char *ending) {
     int c;
@@ -474,7 +474,7 @@ int is_pronomener(char *ord){
 
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord){
-    char * class[100];
+    char *class = (char *)malloc(CHAR_COUNT*sizeof(char));
     printf("\n");
     int lower;
     int max;
@@ -500,18 +500,41 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
   }
     printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
     
+    //Tjekker om omkringliggende ord matcher, det vi leder efter og tilføjer det til class
+    int x = midt - 5;
+    int y = midt + 5;
+    if (midt <= 5){
+        x = 0;
+        y = x + 9;
+    } else if (midt >= WORDS_IN_ORDBOG - 5){
+        y = WORDS_IN_ORDBOG;
+        x = WORDS_IN_ORDBOG - 10;
+    }
+
+    strcat(class,ord);
+    strcat(class,";");
+    printf("Tjekker for om der er flere ord, med anden ordklasse\n");
+    while (x != y){
+        if (strcmp(ord, ord_array[x]) == 0){
+            printf("Ordet på plads %d matcher!\n%s og %s\n",x ,ord , ord_array[x]);
+            printf("Tilføjer ordklassen til 'class'-arrayet\n");
+            strcat(class,word_class[x]);
+            strcat(class,";");
+            x++;
+        } else {
+            //printf("Ordet på plads %d matcher ikke!\n%s og %s\n",x ,ord , ord_array[x]);
+            x++;
+        }
+ 
+    }
+    printf("Class er %s\n", class);
+
     if (strcmp(ord, ord_array[lower - 1]) == 0){
         printf("BinSeach: %s er på position %d\n",ord,lower);
-        return word_class[lower - 1];
-
+        return class;
     }
-    //Noget der skal tjekke de omkringliggende ord er samme ord, og i så fald;
-    //Skal ordklassen sendes med: 
-    //Ordet "Under" har fx 3(4) forskellige ordklasser/betdyninger: sb, sb, adv, præp.
-
     
 }
-
 
 
 // funktion for endelse(artikel) 
