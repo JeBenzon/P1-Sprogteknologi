@@ -54,12 +54,12 @@ int talord(char *ord); // talord
 int cmp_talord(char *ord);
 int str_talord(char *ord);
 
-int pronomener(char *ord);
+int pronomener(char *ord); // stedord 
 int is_pronomener(char *ord);
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord);
 
-// int pronomener(char *ord); // stedord
+
 
 
 void testord(char ** ord_array, char ** class_array);
