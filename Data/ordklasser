@@ -32,3 +32,20 @@ lydord                  (lydord)
 præfiks                 (praefiks)
 egennavn                (prop)
 ===
+
+
+Program rækkefølge:
+1. "pron", 
+2. "artikel", 
+3. "sb",
+4. "vb", 
+5. "adj", 
+6. "adv",
+7. "konj", 
+8."prop", 
+9. "praep",
+10. "praefiks", 
+11. "talord", 
+12. "lydord", 
+13. "udraabsord",
+14. "fork"

@@ -127,46 +127,40 @@ int main(void){
 
 int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
     char ordbog_classes[ORDBOG_CLASS_COUNT][ORDBOG_CLASS_LEN] = {
-        "artikel", "sb", "vb", "adj", "adv", "konj", "pron", "prop", "praep", "praefiks", "udraabsord", "talord", "lydord", "fork"};
-    int *ord_class_list = (int)calloc(ORDBOG_CLASS_COUNT, sizeof(int));
-    char *ordbogs_class = (char *)malloc(CHAR_COUNT * sizeof(char));
+        "pron", "artikel", "sb", "vb", "adj", "adv", "konj", "prop", "praep", "praefiks", "talord", "lydord", "udraabsord","fork"};
     
-    
-    /*for (int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-         if(c = ORDBOG_CLASS_COUNT) {
-             ord_class_list[c] = '\0';
-         }
-         ord_class_list[c] = 0;
-     }*/
+    int *ord_class_list = calloc(ORDBOG_CLASS_COUNT, sizeof(int));
 
-    ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
+    printf("ordet er: %s\n", ord);
+    char *ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
 
-    printf("BinReturn: %s\n", ordbogs_class);
-
-    printf("Test\n");
+    if(ordbogs_class == ""){
+        printf("empty\n");
+    }
+    //printf("BinReturn: %s\n", ordbogs_class);
 
     for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-        char *tempt = calloc(ORDBOG_CLASS_LEN, sizeof(char));
-        // char *token = calloc(ORDBOG_CLASS_LEN, sizeof(char));
-    
-    //printf("Ordbogs_class: %s ordbog_classes: %s\n", ordbogs_class, ordbog_classes);
-            tempt = strstr(ordbogs_class, ordbog_classes[c]); //tempt token
+        //printf("ordbogclass: %s\n", ordbog_classes[c]);
+        char * tempt = malloc(10 * sizeof(char));
+        tempt = strstr(ordbogs_class, ordbog_classes[c]); //tempt token
+        //printf("class: %s indeholder: %s resultat: %s\n", ordbogs_class, ordbog_classes[c], tempt);
+        if(tempt == NULL){
+            continue;
+        }
+        if(strtok(tempt, ",") != NULL){
+            //printf("temp had ,\n");
             tempt = strtok(tempt, ",");
-            tempt = strtok(tempt, ";");
-            printf("Ordbogs_class: %s");
-            printf("strstr %s\n", tempt);
-            //printf("Token: %s\n", token);
-            printf("classes2 %s\n", ordbog_classes[c]);
+        }
+        tempt = strtok(tempt, ";");
 
-        if (strcmp(tempt, ordbog_classes[c]) == 0) { 
-            printf("Ordbogs_class: %s ordbog_classes: %s\n", ordbogs_class, ordbog_classes);
-            printf("TestEfterIF. C er lig: %d\n", c);
-    
+        int temp2 = strcmp(tempt, ordbog_classes[c]);
+        
+        if(temp2 == 0) { 
             ord_class_list[c] = 1;
         }
     }
     for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-    printf("Array: %d\n", ord_class_list[c]);
+    printf("array: %d -> %d\n", c, ord_class_list[c]);
     }
     return ord_class_list;
 }
@@ -215,7 +209,7 @@ char *class_switch(int i, char *ord) {
             konjunktioner(ord);
             break;
         case 7:
-            substantiver(ord); // Dette er specifikt proprier (mangler funktion)
+            //prop(ord); // Dette er specifikt proprier (mangler funktion)
             break;
         case 8:
             praepositioner(ord);
@@ -246,7 +240,7 @@ char *capitol_to_lowercase(char *ord) {
     for (c = 0; c < ord_len; c++) {
         ord[c] = tolower(ord[c]);
     }
-    printf("Omskrevet ord er %s.\n", ord);
+    //printf("Omskrevet ord er %s.\n", ord);
     return ord;
 }
 
@@ -561,8 +555,12 @@ int is_pronomener(char *ord) {
 }
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord){
+    //laver søgeord om til lowercase
+    char * lowercase_ord = capitol_to_lowercase(ord);
+
+    //printf("søgning ordet er: %s\n", ord);
     char *class = (char *)malloc(CHAR_COUNT*sizeof(char));
-    //printf("\n");
+
     int lower;
     int max;
     int midt;
@@ -574,18 +572,15 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
         //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n", lower, midt, max);
         //printf("strcmp: %d\n", strcmp(ord, ord_array[midt]));
 
-
-        if ((strcmp(ord, ord_array[midt]) >= 0)){
+        if ((strcmp(lowercase_ord, ord_array[midt]) > 0)){
             //printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
-            lower = midt + 1;
+            lower = midt + 2;
         } else{
             //printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
             max = midt;
         }
-        //printf("\n");
-
-  }
-    //printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\n ord_array:\t %s\n", lower, midt, max, ord_array[midt]);
+    }
+    printf("Min:\t%d\nMidt:\t%d\nMax:\t%d\nord:\t%s\n", lower +1, midt +1, max +1, ord_array[midt]);
     
     //Tjekker om omkringliggende ord matcher, det vi leder efter og tilføjer det til class
     int x = midt - 5;
@@ -597,30 +592,31 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
         y = WORDS_IN_ORDBOG;
         x = WORDS_IN_ORDBOG - 10;
     }
-
+    
     //strcat(class,ord);
     //strcat(class,";");
     //printf("Tjekker for om der er flere ord, med anden ordklasse\n");
     while (x != y){
-        if (strcmp(ord, ord_array[x]) == 0){
+        if (strcmp(lowercase_ord, ord_array[x]) == 0){
             //printf("Ordet på plads %d matcher!\n%s og %s\n",x ,ord , ord_array[x]);
             //printf("Tilføjer ordklassen til 'class'-arrayet\n");
-            strcat(class,word_class[x]);
-            strcat(class,";");
+            strcat(class, word_class[x]);
+            strcat(class, ";");
             x++;
         } else {
             //printf("Ordet på plads %d matcher ikke!\n%s og %s\n",x ,ord , ord_array[x]);
             x++;
+            printf("this happened to");
         }
  
     }
-    //printf("Class er %s\n", class);
-
-    if (strcmp(ord, ord_array[lower - 1]) == 0){
-        class[strlen(class) +1] = '\0';
-        //printf("BinSeach: %s er på position %d\n",ord,lower);'
+    printf("%s", class);
+    if(class != NULL){
+        printf("not null");
         return class;
     }
+    
+    printf("this happened");
     return "";
 }
 
