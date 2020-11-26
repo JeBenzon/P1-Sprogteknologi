@@ -17,6 +17,8 @@
 #define VER_END_LEN 5
 #define ADV_END_COUNT 5
 #define ADV_END_LEN 4
+#define ORDBOG_CLASS_COUNT 14
+#define ORDBOG_CLASS_LEN 11
 
 int str_ending_compare(char *ord, char *ending);
 char *capitol_to_lowercase(char *ord);
@@ -58,7 +60,7 @@ int is_pronomener(char *ord);
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord);
 
-char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord);
+int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord);
 
 
 
@@ -100,7 +102,7 @@ int main(void){
 }
 */
 
-char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
+/*char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
     
     char * ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
     //printf("%s\n", ordbogs_class);
@@ -120,7 +122,35 @@ char * get_our_estimate(char ** book_array_words, char ** book_array_class, char
     printf("Token: %s\n",  token2);
 
     return "";
+}*/
+
+int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
+    char ordbog_classes[ORDBOG_CLASS_COUNT][ORDBOG_CLASS_LEN] = {
+        "artikel", "sb", "vb", "adj", "adv", "konj", "pron", "prop", "praep", "praefiks", "udraabsord", "talord", "lydord"};
+    int ord_class_list = (int*)calloc(ORDBOG_CLASS_COUNT, sizeof(int));
+    
+    /*for (int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
+         if(c = ORDBOG_CLASS_COUNT) {
+             ord_class_list[c] = '\0';
+         }
+         ord_class_list[c] = 0;
+     }*/
+
+    char * ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
+
+    printf("BinReturn: %s", ordbogs_class);
+
+    for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
+        if (strstr(ordbogs_class, ordbog_classes[c]) == ordbog_classes[c]) { 
+            ord_class_list[c] = 1;
+        }
+    }
+    for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
+    printf("Array: %d", ord_class_list[c]);
+    }
+    return ord_class_list;
 }
+
 
 int str_ending_compare(char *ord, char *ending) {
     int c;
