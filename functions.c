@@ -17,11 +17,12 @@
 #define VER_END_LEN 5
 #define ADV_END_COUNT 5
 #define ADV_END_LEN 4
-#define ORDBOG_CLASS_COUNT 14
+#define ORDBOG_CLASS_COUNT 15
 #define ORDBOG_CLASS_LEN 11
 
 int str_ending_compare(char *ord, char *ending);
 char *capitol_to_lowercase(char *ord);
+char *class_switch(int i, char *ord);
 
 int substantiver(char *ord);  // navneord
 int is_capitol_letter(char first_letter);
@@ -126,8 +127,10 @@ int main(void){
 
 int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
     char ordbog_classes[ORDBOG_CLASS_COUNT][ORDBOG_CLASS_LEN] = {
-        "artikel", "sb", "vb", "adj", "adv", "konj", "pron", "prop", "praep", "praefiks", "udraabsord", "talord", "lydord"};
-    int ord_class_list = (int*)calloc(ORDBOG_CLASS_COUNT, sizeof(int));
+        "artikel", "sb", "vb", "adj", "adv", "konj", "pron", "prop", "praep", "praefiks", "udraabsord", "talord", "lydord", "fork"};
+    int *ord_class_list = (int)calloc(ORDBOG_CLASS_COUNT, sizeof(int));
+    char *ordbogs_class = (char *)malloc(CHAR_COUNT * sizeof(char));
+    
     
     /*for (int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
          if(c = ORDBOG_CLASS_COUNT) {
@@ -136,17 +139,34 @@ int * get_our_estimate(char ** book_array_words, char ** book_array_class, char 
          ord_class_list[c] = 0;
      }*/
 
-    char * ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
+    ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
 
-    printf("BinReturn: %s", ordbogs_class);
+    printf("BinReturn: %s\n", ordbogs_class);
+
+    printf("Test\n");
 
     for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-        if (strstr(ordbogs_class, ordbog_classes[c]) == ordbog_classes[c]) { 
+        char *tempt = calloc(ORDBOG_CLASS_LEN, sizeof(char));
+        // char *token = calloc(ORDBOG_CLASS_LEN, sizeof(char));
+    
+    //printf("Ordbogs_class: %s ordbog_classes: %s\n", ordbogs_class, ordbog_classes);
+            tempt = strstr(ordbogs_class, ordbog_classes[c]); //tempt token
+            tempt = strtok(tempt, ",");
+            tempt = strtok(tempt, ";");
+            printf("Ordbogs_class: %s");
+            printf("strstr %s\n", tempt);
+            //printf("Token: %s\n", token);
+            printf("classes2 %s\n", ordbog_classes[c]);
+
+        if (strcmp(tempt, ordbog_classes[c]) == 0) { 
+            printf("Ordbogs_class: %s ordbog_classes: %s\n", ordbogs_class, ordbog_classes);
+            printf("TestEfterIF. C er lig: %d\n", c);
+    
             ord_class_list[c] = 1;
         }
     }
     for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-    printf("Array: %d", ord_class_list[c]);
+    printf("Array: %d\n", ord_class_list[c]);
     }
     return ord_class_list;
 }
@@ -170,6 +190,66 @@ int str_ending_compare(char *ord, char *ending) {
     return strcmp(ending, ord_ending);
 }
 
+char *class_switch(int i, char *ord) {
+        switch(i) {
+
+        case 0:
+            pronomener(ord);
+            break;
+        case 1:
+            artikler(ord);
+            break;
+        case 2:
+            substantiver(ord);
+            break;
+        case 3:
+            verber(ord);
+            break;
+        case 4:
+            adjektiver(ord);
+            break;
+        case 5:
+            adverbier(ord);
+            break;
+        case 6:
+            konjunktioner(ord);
+            break;
+        case 7:
+            substantiver(ord); // Dette er specifikt proprier (mangler funktion)
+            break;
+        case 8:
+            praepositioner(ord);
+            break;
+        case 9:
+            // praefiks(ord); // Dette skal 
+            break;
+        case 10:
+            talord(ord);
+            break;
+        case 11:
+            lydord(ord);
+            break;
+        case 12:
+            udraabsord(ord);
+            break;
+        case 13:
+            // fork(ord);
+            break;
+    }
+    return "test";
+}
+
+char *capitol_to_lowercase(char *ord) {
+    int ord_len = strlen(ord) + 1;
+    int c;
+
+    for (c = 0; c < ord_len; c++) {
+        ord[c] = tolower(ord[c]);
+    }
+    printf("Omskrevet ord er %s.\n", ord);
+    return ord;
+}
+
 int substantiver(char *ord) {
     printf(" %s\n\n", ord);
 
@@ -187,17 +267,6 @@ int substantiver(char *ord) {
     }
 
     return 0;
-}
-
-char *capitol_to_lowercase(char *ord) {
-    int ord_len = strlen(ord) + 1;
-    int c;
-
-    for (c = 0; c < ord_len; c++) {
-        ord[c] = tolower(ord[c]);
-    }
-    printf("Omskrevet ord er %s.\n", ord);
-    return ord;
 }
 
 int is_capitol_letter(char first_letter) {
@@ -548,7 +617,8 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     //printf("Class er %s\n", class);
 
     if (strcmp(ord, ord_array[lower - 1]) == 0){
-        //printf("BinSeach: %s er på position %d\n",ord,lower);
+        class[strlen(class) +1] = '\0';
+        //printf("BinSeach: %s er på position %d\n",ord,lower);'
         return class;
     }
     return "";
