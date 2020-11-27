@@ -156,7 +156,7 @@ void getWordBookClass(char ** array_words, char ** array_class){
         
     }
 
-    //printArray(array_words, array_class);
+    printArray(array_words, array_class);
 } 
 
 void printArray(char ** array_words, char ** array_class){

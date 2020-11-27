@@ -60,6 +60,7 @@ int pronomener(char *ord); // stedord
 int is_pronomener(char *ord);
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord);
+int bin2(char *search, char **ord_array);
 
 int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord);
 
@@ -234,14 +235,21 @@ char *class_switch(int i, char *ord) {
 }
 
 char *capitol_to_lowercase(char *ord) {
+
+    char * lowercase_ord = malloc(sizeof(ord) * sizeof(char));
+
+    printf("vi kom her ind\n");
     int ord_len = strlen(ord) + 1;
     int c;
 
+    printf("vi kom her ind 2\n");
+
     for (c = 0; c < ord_len; c++) {
-        ord[c] = tolower(ord[c]);
+        lowercase_ord[c] = tolower(ord[c]);
     }
+    printf("vi kom her ind 3\n");
     //printf("Omskrevet ord er %s.\n", ord);
-    return ord;
+    return lowercase_ord;
 }
 
 int substantiver(char *ord) {
@@ -557,6 +565,7 @@ int is_pronomener(char *ord) {
 char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     //laver søgeord om til lowercase
     char * lowercase_ord = capitol_to_lowercase(ord);
+    printf("%s\n", lowercase_ord);
 
     //printf("søgning ordet er: %s\n", ord);
     char *class = (char *)malloc(CHAR_COUNT*sizeof(char));
@@ -574,7 +583,7 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
 
         if ((strcmp(lowercase_ord, ord_array[midt]) > 0)){
             //printf("ordet: %s, ligger højere end ordet: %s\n", ord, ord_array[midt]);
-            lower = midt + 2;
+            lower = midt + 1;
         } else{
             //printf("ordet: %s, ligger lavere end ordet: %s\n", ord, ord_array[midt]);
             max = midt;
@@ -619,6 +628,47 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     printf("this happened");
     return "";
 }
+
+int bin2(char *search, char **ord_array){
+
+    char * lowercase_search = malloc(sizeof(search) * sizeof(char));
+
+    printf("1\n");
+    
+    lowercase_search = capitol_to_lowercase(search);
+    
+    printf("2\n");
+   
+    int first = 0;
+    int last = WORDS_IN_ORDBOG;
+    int middle = (first+last)/2;
+
+    printf("3\n");
+
+    while (first <= last){
+        printf("test\n");
+        if (strcmp(lowercase_search, ord_array[middle]) > 0){
+            first = middle + 1;
+            printf("4\n");
+        }else if (strcmp(ord_array[middle], lowercase_search) == 0){
+            return middle;
+            printf("'%s' found at location %d.\n", lowercase_search, middle+1);
+            break;
+        }
+        else{
+            last = middle - 1;
+            printf("5\n");
+        }
+    }
+    if (first > last){
+        printf("Not found! '%s' isn't present in the list.\n", lowercase_search);
+        return -1;
+    }
+    return -1;
+}
+
+
+
 
 
 // funktion for endelse(artikel) 
