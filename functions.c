@@ -238,16 +238,12 @@ char *capitol_to_lowercase(char *ord) {
 
     char * lowercase_ord = malloc(sizeof(ord) * sizeof(char));
 
-    printf("vi kom her ind\n");
     int ord_len = strlen(ord) + 1;
     int c;
-
-    printf("vi kom her ind 2\n");
 
     for (c = 0; c < ord_len; c++) {
         lowercase_ord[c] = tolower(ord[c]);
     }
-    printf("vi kom her ind 3\n");
     //printf("Omskrevet ord er %s.\n", ord);
     return lowercase_ord;
 }
@@ -632,38 +628,38 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
 int bin2(char *search, char **ord_array){
 
     char * lowercase_search = malloc(sizeof(search) * sizeof(char));
-
-    printf("1\n");
+    int x = 0;
     
     lowercase_search = capitol_to_lowercase(search);
-    
-    printf("2\n");
+
+    // printf("%s\n", lowercase_search);
    
     int first = 0;
     int last = WORDS_IN_ORDBOG;
     int middle = (first+last)/2;
 
-    printf("3\n");
 
-    while (first <= last){
-        printf("test\n");
-        if (strcmp(lowercase_search, ord_array[middle]) > 0){
-            first = middle + 1;
-            printf("4\n");
-        }else if (strcmp(ord_array[middle], lowercase_search) == 0){
+    while (first <= last && x != 30){
+        x++;
+        // printf("%d, %d, %d\n", first, last, middle);
+
+        if ((strcmp(lowercase_search, ord_array[middle])) > 0){
+            first = middle;
+        
+        }else if ((strcmp(ord_array[middle], lowercase_search)) == 0){
+            // printf("'%s' found at location %d.\n", lowercase_search, middle+1);
             return middle;
-            printf("'%s' found at location %d.\n", lowercase_search, middle+1);
-            break;
         }
         else{
-            last = middle - 1;
-            printf("5\n");
+            last = middle;
         }
+        middle = (first + last)/2;
     }
     if (first > last){
         printf("Not found! '%s' isn't present in the list.\n", lowercase_search);
         return -1;
     }
+    //printf("naede til return\n");
     return -1;
 }
 
