@@ -1,8 +1,8 @@
-NUM (talord) feks en, to (talord)
-ADJ (adjektiv, tillægsord) (adj)
-NOUN (navneord, substantiv) (sb)
-PROPN (egennavn, substantiv) (prop)
-VERB (udsangsord) (vb)
+NUM (talord) feks en, to (talord)1
+ADJ (adjektiv, tillægsord) (adj)1
+NOUN (navneord, substantiv) (sb)1
+PROPN (egennavn, substantiv) (prop)1
+VERB (udsangsord) (vb)1
 ADV  (biord)
 PUNCT (tegn)
 CCONJ (konj)
@@ -31,21 +31,23 @@ udråbsord,              (udraabsord)
 lydord                  (lydord)
 præfiks                 (praefiks)
 egennavn                (prop)
+forkortelser            (fork)
 ===
 
 
 Program rækkefølge:
-1. "pron", 
-2. "artikel", 
-3. "sb",
-4. "vb", 
-5. "adj", 
-6. "adv",
-7. "konj", 
-8."prop", 
-9. "praep",
-10. "praefiks", 
-11. "talord", 
-12. "lydord", 
-13. "udraabsord",
-14. "fork"
+1. "pron",        PRON
+2. "artikel",     DET
+3. "sb",          NOUN
+4. "vb",          VERB/AUX
+5. "adj",         ADJ
+6. "adv",         ADV
+7. "konj",        CCONJ/SCONJ/PART
+8. "prop",        PROPN
+9. "praep",       ADP
+10."praefiks",    x
+11."talord",      NUM
+12."lydord",      INTJ
+13."udraabsord"   x
+14. "fork"        x
+15. "punktum"     PUNCT

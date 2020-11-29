@@ -4,56 +4,65 @@
 
 #include "input.c"
 #include "functions.c"
-#include "output.c"
 
 
-#define WORDS_COUNT 80378
-#define WORDS_IN_ORDBOG 64894
-#define ORDBOG_CLASS_COUNT 14
+
+#define WORDS_IN_DATA 80378
+#define WORDS_IN_DICTIONARY 64894
+
+
 int main(void){
     
-    char **input_array_words = (char **)malloc(WORDS_COUNT * sizeof(char *));
-    char **input_array_class = (char **)malloc(WORDS_COUNT * sizeof(char *));
+    char **data_words = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
+    char **data_wordclass = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
      
-    char **guesstimate = (char **)malloc(WORDS_COUNT * sizeof(char *));
+    char **estimate_wordclass = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
 
     //truefalse array
-    //int *truefalse_array = (int*)calloc(WORDS_COUNT, sizeof(int));
+    int *truefalse_array = (int*)calloc(WORDS_IN_DATA, sizeof(int));
 
-    char **book_array_words = (char **)malloc(WORDS_IN_ORDBOG * sizeof(char *));
-    char **book_array_class = (char **)malloc(WORDS_IN_ORDBOG * sizeof(char *));
+    char **dictionary_words = (char **)malloc(WORDS_IN_DICTIONARY * sizeof(char *));
+    char **dictionary_wordclass = (char **)malloc(WORDS_IN_DICTIONARY * sizeof(char *));
 
-    getWordBookClass(book_array_words, book_array_class);
+    get_data(data_words, data_wordclass, WORDS_IN_DATA);
+    get_dictionary(dictionary_words, dictionary_wordclass, WORDS_IN_DICTIONARY);
     
-    getArrayFromFile(input_array_words, input_array_class);
-    
-    for(int i = 0; i < 20; i++) {
-        int b = bin2(input_array_words[i], book_array_words);
+    int winrate = 0;
+    int i;
 
-        if(b != -1) {
-            printf(" %d %s\n", b, book_array_words[b]);
-        } else {
-            printf("fejl\n");
-        }
+    //estimate_wordclass[0] = get_estimate(dictionary_words, dictionary_wordclass, data_words[4405]);
+    //printf("%s %s\n",estimate_wordclass[0], data_words[4405]);
+    
+    for(i = 0; i < 80000; i++) {
 
-    }
-    
-    //printf("%s",BinSearch(book_array_words, book_array_class, input_array_words[0]));
-    //print_output(input_array_words, input_array_class, output_array_class_guesstimate, truefalse_array);
-    
-    /*
-    for(int i = 0; i < 5; i++){
-        int * ord_class_list = get_our_estimate(book_array_words, book_array_class, input_array_words[i]);
-        //output_array_class_guesstimate[i] = get_our_estimate( *book_array_words, *book_array_class, input_array_words[i]);
+        estimate_wordclass[i] = get_estimate(dictionary_words, dictionary_wordclass, data_words[i]);
         
-        for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-            if(ord_class_list[c] == 1) {
-                guesstimate[c] = class_switch(c, input_array_words[c]);
+
+        if(data_words[i] != NULL || data_wordclass[i] != NULL || estimate_wordclass[i] != NULL){
+            
+            //Understående strcmp har endnu ingen funktion, da de er formateret hver for sig.
+            //+ så bliver int(output_truefalse) ikke 0 eller 1, da stringcomp. ikke giver 1 eller 0.
+            if(strcmp(data_wordclass[i], estimate_wordclass[i]) == 0) {
+            truefalse_array[i] = 1;
+            winrate++;
             }
-            //printf("Guestimate er: %s", guesstimate[c]);
+
+            printf("%d: %s\t%s\t%s\t%d\n",i+1, data_words[i], data_wordclass[i], estimate_wordclass[i], truefalse_array[i]);
+            
+
+        }else{
+            //printf("%d: Fejl\n", i);
         }
     }
-    */
     
+    printf("accuracy: %d out of %d\n", winrate, i);
+    
+    free(data_words);
+    free(data_wordclass);
+    free(estimate_wordclass);
+    free(truefalse_array);
+    free(dictionary_words);
+    free(dictionary_wordclass);
+
     return 0;
 }

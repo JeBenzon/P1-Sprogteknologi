@@ -8,7 +8,6 @@
 
 #define WORDS_IN_ORDBOG 64896
 #define WORDS_COUNT 300
-#define CHAR_COUNT 50
 #define SUB_END_COUNT 9
 #define SUB_END_LEN 4
 #define ADJ_END_COUNT 8
@@ -21,8 +20,7 @@
 #define ORDBOG_CLASS_LEN 11
 
 int str_ending_compare(char *ord, char *ending);
-char *capitol_to_lowercase(char *ord);
-char *class_switch(int i, char *ord);
+char *to_lower_case(char *ord);
 
 int substantiver(char *ord);  // navneord
 int is_capitol_letter(char first_letter);
@@ -60,112 +58,15 @@ int pronomener(char *ord); // stedord
 int is_pronomener(char *ord);
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord);
-int bin2(char *search, char **ord_array);
 
-int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord);
+int bin_search(char *search, char **ord_array);
+char ** get_wordclass(int index, char **dictionary_words, char **dictionary_wordclass);
+char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char * ord);
 
+void run_switch2(char *ord, int * class_score, char ** dictionary_words, int index);
+int class_index(char *ord);
 
-
-void testord(char **ord_array, char **class_array);
-
-/*
-//Test main for functions
-int main(void){
-    char **ord_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
-    char **class_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
-    char **vores_klaase_array = (char **)malloc(WORDS_COUNT * sizeof(char *));
-
-
-    testord(ord_array, class_array);
-
-    substantiver(ord_array[0]);
-
-    adjektiver(ord_array[21]);
-
-    verber(ord_array[21]);
-
-    adverbier(ord_array[21]);
-
-    artikler(ord_array[21]);
-
-    konjunktioner(ord_array[21]);
-
-    praepositioner(ord_array[21]);
-
-    udraabsord(ord_array[21]);
-
-    lydord(ord_array[21]);
-
-    talord(ord_array[21]);
-
-    pronomener(ord_array[2]);
-
-    printf(" %d", is_capitol_letter(ord_array[24][3]));
-}
-*/
-
-/*char * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
-    
-    char * ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
-    //printf("%s\n", ordbogs_class);
-    ordbogs_class[strlen(ordbogs_class)-1] = '\0';
-    printf("%s\n", ordbogs_class);
-    
-    char * token = strtok(ordbogs_class, ",");
-    char * midlertidig = token;
-    printf("midertidig: %s\n", midlertidig);
-    char * token2 = strtok(ordbogs_class, ";");
-    printf("Token: %s\n",  token2);
-    token = strtok(NULL, "\r");
-    printf("Token: %s\n",  token2);
-    token = strtok(NULL, "\r");
-    printf("Token: %s\n",  token2);
-    token = strtok(NULL, "\r;");
-    printf("Token: %s\n",  token2);
-
-    return "";
-}*/
-
-int * get_our_estimate(char ** book_array_words, char ** book_array_class, char * ord){
-    char ordbog_classes[ORDBOG_CLASS_COUNT][ORDBOG_CLASS_LEN] = {
-        "pron", "artikel", "sb", "vb", "adj", "adv", "konj", "prop", "praep", "praefiks", "talord", "lydord", "udraabsord","fork"};
-    
-    int *ord_class_list = calloc(ORDBOG_CLASS_COUNT, sizeof(int));
-
-    printf("ordet er: %s\n", ord);
-    char *ordbogs_class = BinSearch(book_array_words, book_array_class, ord);
-
-    if(ordbogs_class == ""){
-        printf("empty\n");
-    }
-    //printf("BinReturn: %s\n", ordbogs_class);
-
-    for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-        //printf("ordbogclass: %s\n", ordbog_classes[c]);
-        char * tempt = malloc(10 * sizeof(char));
-        tempt = strstr(ordbogs_class, ordbog_classes[c]); //tempt token
-        //printf("class: %s indeholder: %s resultat: %s\n", ordbogs_class, ordbog_classes[c], tempt);
-        if(tempt == NULL){
-            continue;
-        }
-        if(strtok(tempt, ",") != NULL){
-            //printf("temp had ,\n");
-            tempt = strtok(tempt, ",");
-        }
-        tempt = strtok(tempt, ";");
-
-        int temp2 = strcmp(tempt, ordbog_classes[c]);
-        
-        if(temp2 == 0) { 
-            ord_class_list[c] = 1;
-        }
-    }
-    for(int c = 0; c < ORDBOG_CLASS_COUNT; c++) {
-    printf("array: %d -> %d\n", c, ord_class_list[c]);
-    }
-    return ord_class_list;
-}
-
+char * index_to_dataclass(int index);
 
 int str_ending_compare(char *ord, char *ending) {
     int c;
@@ -185,58 +86,11 @@ int str_ending_compare(char *ord, char *ending) {
     return strcmp(ending, ord_ending);
 }
 
-char *class_switch(int i, char *ord) {
-        switch(i) {
 
-        case 0:
-            pronomener(ord);
-            break;
-        case 1:
-            artikler(ord);
-            break;
-        case 2:
-            substantiver(ord);
-            break;
-        case 3:
-            verber(ord);
-            break;
-        case 4:
-            adjektiver(ord);
-            break;
-        case 5:
-            adverbier(ord);
-            break;
-        case 6:
-            konjunktioner(ord);
-            break;
-        case 7:
-            //prop(ord); // Dette er specifikt proprier (mangler funktion)
-            break;
-        case 8:
-            praepositioner(ord);
-            break;
-        case 9:
-            // praefiks(ord); // Dette skal 
-            break;
-        case 10:
-            talord(ord);
-            break;
-        case 11:
-            lydord(ord);
-            break;
-        case 12:
-            udraabsord(ord);
-            break;
-        case 13:
-            // fork(ord);
-            break;
-    }
-    return "test";
-}
 
-char *capitol_to_lowercase(char *ord) {
+char *to_lower_case(char *ord) {
 
-    char * lowercase_ord = malloc(sizeof(ord) * sizeof(char));
+    char * lowercase_ord = malloc(WORDS_COUNT * sizeof(* lowercase_ord));
 
     int ord_len = strlen(ord) + 1;
     int c;
@@ -249,22 +103,24 @@ char *capitol_to_lowercase(char *ord) {
 }
 
 int substantiver(char *ord) {
-    printf(" %s\n\n", ord);
-
+    //printf(" %s\n\n", ord);
+    int score = 0;
     if (is_capitol_letter(ord[0]) == 2) {
-        printf("capitol er opfyldt\n\n");
-        printf("nyt ord er %s\n\n", capitol_to_lowercase(ord));
+        //printf("capitol er opfyldt\n\n");
+        //printf("nyt ord er %s\n\n", to_lower_case(ord));
+        score++;
     } else {
-        printf("capitol er ikke opfyldt\n\n");
+        //printf("capitol er ikke opfyldt\n\n");
     }
 
     if (sub_correct_ending(ord) == 1) {
-        printf("sub_ending er opfyldt\n\n");
+        //printf("sub_ending er opfyldt\n\n");
+        score++;
     } else {
-        printf("sub_ending er ikke opfyldt\n\n");
+        //printf("sub_ending er ikke opfyldt\n\n");
     }
 
-    return 0;
+    return score;
 }
 
 int is_capitol_letter(char first_letter) {
@@ -292,9 +148,11 @@ int sub_correct_ending(char *ord) {
 
 int adjektiver(char *ord) {
     if (adj_correct_ending(ord) == 1) {
-        printf("adj_ending er opfyldt\n\n");
+        //printf("adj_ending er opfyldt\n\n");
+        return 1;
     } else {
-        printf("adj_ending er ikke opfyldt\n\n");
+        //printf("adj_ending er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -314,9 +172,11 @@ int adj_correct_ending(char *ord) {
 
 int verber(char *ord) {
     if (ver_correct_ending(ord) == 1) {
-        printf("ver_ending er opfyldt\n\n");
+        //printf("ver_ending er opfyldt\n\n");
+        return 1;
     } else {
-        printf("ver_ending er ikke opfyldt\n\n");
+        //printf("ver_ending er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -336,9 +196,11 @@ int ver_correct_ending(char *ord) {
 
 int adverbier(char *ord) {
     if (adv_correct_ending(ord) == 1) {
-        printf("adv_ending er opfyldt\n\n");
+        //printf("adv_ending er opfyldt\n\n");
+        return 1;
     } else {
-        printf("adv_ending er ikke opfyldt\n\n");
+        //printf("adv_ending er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -357,9 +219,11 @@ int adv_correct_ending(char *ord) {
 
 int artikler(char *ord) {
     if (is_article(ord) == 1) {
-        printf("article er opfyldt\n\n");
+        //printf("article er opfyldt\n\n");
+        return 1;
     } else {
-        printf("article er ikke opfyldt\n\n");
+        //printf("article er ikke opfyldt\n\n");
+        return 0;
     }
 
     return 0;
@@ -379,9 +243,11 @@ int is_article(char *ord) {
 
 int konjunktioner(char *ord) {
     if (is_conjunction(ord) == 1) {
-        printf("conjunction er opfyldt\n\n");
+        //printf("conjunction er opfyldt\n\n");
+        return 1;
     } else {
-        printf("conjunction er ikke opfyldt\n\n");
+        //printf("conjunction er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -413,9 +279,11 @@ int is_conjunction(char *ord) {
 
 int praepositioner(char *ord) {
     if (is_preposition(ord) == 1) {
-        printf("preposition er opfyldt\n\n");
+        //printf("preposition er opfyldt\n\n");
+        return 1;
     } else {
-        printf("preposition er ikke opfyldt\n\n");
+        //printf("preposition er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -427,7 +295,7 @@ int is_preposition(char *ord) {
         "fra",     "ved",    "for",    "med",   "hos",   "mod",   "bag",
         "paa",     "om",     "af",     "ad",    "i"};
 
-    for (int i = 0; i < (int)sizeof(preposition); i++) {
+    for (int i = 0; i < 26; i++) {
         if (strcmp(ord, preposition[i]) == 0) {
             return 1;
         }
@@ -437,9 +305,11 @@ int is_preposition(char *ord) {
 
 int udraabsord(char *ord) {
     if (is_yelling(ord) == 1) {
-        printf("udraabsord er opfyldt\n\n");
+        //printf("udraabsord er opfyldt\n\n");
+        return 1;
     } else {
-        printf("udraabsord er ikke opfyldt\n\n");
+        //printf("udraabsord er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -460,9 +330,11 @@ int is_yelling(char *ord) {
 
 int lydord(char *ord) {
     if (is_sound(ord) == 1) {
-        printf("lydord er opfyldt\n\n");
+        //printf("lydord er opfyldt\n\n");
+        return 1;
     } else {
-        printf("lydord er ikke opfyldt\n\n");
+        //printf("lydord er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -481,9 +353,11 @@ int is_sound(char *ord) {
 
 int talord(char *ord) {
     if (cmp_talord(ord) == 1 || str_talord(ord) == 1) {
-        printf("talord er opfyldt\n\n");
+        //printf("talord er opfyldt\n\n");
+        return 1;
     } else {
-        printf("talord er ikke opfyldt\n\n");
+        //printf("talord er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -522,9 +396,11 @@ int str_talord(char *ord) {
 
 int pronomener(char *ord) {
     if (is_pronomener(ord) == 1) {
-        printf("pronomener er opfyldt\n\n");
+        //printf("pronomener er opfyldt\n\n");
+        return 1;
     } else {
-        printf("pronomener er ikke opfyldt\n\n");
+        //printf("pronomener er ikke opfyldt\n\n");
+        return 0;
     }
     return 0;
 }
@@ -560,11 +436,11 @@ int is_pronomener(char *ord) {
 
 char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     //laver søgeord om til lowercase
-    char * lowercase_ord = capitol_to_lowercase(ord);
+    char * lowercase_ord = to_lower_case(ord);
     printf("%s\n", lowercase_ord);
 
     //printf("søgning ordet er: %s\n", ord);
-    char *class = (char *)malloc(CHAR_COUNT*sizeof(char));
+    char *class = (char *)malloc(WORD_LEN*sizeof(char));
 
     int lower;
     int max;
@@ -613,7 +489,6 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
             x++;
             printf("this happened to");
         }
- 
     }
     printf("%s", class);
     if(class != NULL){
@@ -625,347 +500,260 @@ char * BinSearch(char ** ord_array, char ** word_class, char * ord){
     return "";
 }
 
-int bin2(char *search, char **ord_array){
-
-    char * lowercase_search = malloc(sizeof(search) * sizeof(char));
-    int x = 0;
+//returns the index of the searched word, in the given array.
+int bin_search(char *search, char **dictionary_words){
     
-    lowercase_search = capitol_to_lowercase(search);
-
-    // printf("%s\n", lowercase_search);
+    char * lowercase_search = to_lower_case(search);
    
+    int maxRuntime = 0;
     int first = 0;
     int last = WORDS_IN_ORDBOG;
     int middle = (first+last)/2;
 
-
-    while (first <= last && x != 30){
-        x++;
+   
+    while (first <= last && maxRuntime < 30){
         // printf("%d, %d, %d\n", first, last, middle);
-
-        if ((strcmp(lowercase_search, ord_array[middle])) > 0){
+        if ((strcmp(lowercase_search, dictionary_words[middle])) > 0){
             first = middle;
         
-        }else if ((strcmp(ord_array[middle], lowercase_search)) == 0){
+        }else if ((strcmp(dictionary_words[middle], lowercase_search)) == 0){
             // printf("'%s' found at location %d.\n", lowercase_search, middle+1);
+            free(lowercase_search);
             return middle;
         }
         else{
             last = middle;
         }
+
         middle = (first + last)/2;
+        maxRuntime++;
     }
     if (first > last){
         printf("Not found! '%s' isn't present in the list.\n", lowercase_search);
+        free(lowercase_search);
         return -1;
     }
     //printf("naede til return\n");
+    free(lowercase_search);
     return -1;
 }
 
+char ** get_wordclass(int index, char **dictionary_words, char **dictionary_wordclass){
 
+    char ** wordclasses = malloc(10 * sizeof(char *));
 
-
-
-// funktion for endelse(artikel) 
-// funktion for artikel - tjek forrige ord
-// funktion for første ord i sætning - tjek forrige ord for punktum
-// funktion for ordklassesandsynlighed - tjek returværdier
-
-
-
-
-void testord(char ** ord_array, char ** class_array){
-
-    for (int i = 0; i < WORDS_COUNT; i++){
-        ord_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char)); 
-        class_array[i] = (char *)malloc(CHAR_COUNT * sizeof(char));
+    //Checker at wordclasses blev oprettet i Memory,
+    if(wordclasses != NULL){
+        int new_index = index;
+        int i = 0;
+        //checks above index and acumulate wordclasses
+        while(strcmp(dictionary_words[index], dictionary_words[new_index]) == 0){
+            wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
+            if(wordclasses[i] != NULL){
+                wordclasses[i] = dictionary_wordclass[new_index];
+                new_index++;
+                i++;
+            }else{
+                printf("NO SPACE IN MEMORY");
+            }            
+        }
+        //checks below index and acumulate wordclasses
+        new_index = index-1;
+        while(strcmp(dictionary_words[index], dictionary_words[new_index]) == 0){
+            wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
+            if(wordclasses[i] != NULL){
+                wordclasses[i] = dictionary_wordclass[new_index];
+                new_index--;
+                i++;
+                
+            }else{
+                printf("NO SPACE IN MEMORY");
+            }    
+        }
+    }else{
+        //Exit failure hvis der ikke var palds i memory
+        printf("NO SPACE IN MEMORY");
     }
-    ord_array[0][0] = 'P';
-    ord_array[0][1] = 'a';
-    ord_array[0][2] = 'a';
-    ord_array[0][3] = '\0';
+    
+    return wordclasses;
+}
 
-    class_array[0][0] = 'A';
-    class_array[0][1] = 'D';
-    class_array[0][2] = 'P';
-    class_array[0][3] = '\0';
+char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char * ord){
+    
+    int *wordclass = calloc(WORDS_COUNT, sizeof(int));
+    int * class_score = calloc(WORDS_COUNT, sizeof(int));
 
-    ord_array[1][0] = 'F';
-    ord_array[1][1] = 'r';
-    ord_array[1][2] = 'e';
-    ord_array[1][3] = 'd';
-    ord_array[1][4] = 'a';
-    ord_array[1][5] = 'g';
-    ord_array[1][6] = '\0';
+    int index = bin_search(ord, dictionary_words);
+    //printf("%d, %s", index, dictionary_words[index]);
 
-    class_array[1][0] = 'N';
-    class_array[1][1] = 'O';
-    class_array[1][2] = 'U';
-    class_array[1][3] = 'N';
-    class_array[1][4] = '\0';
+    if(index != -1){
+        char ** wordclasses = get_wordclass(index, dictionary_words, dictionary_wordclass);
+        //printf("%s\n", wordclasses[0]);
+        int i = 0;
+        //checker om ordet indeholder 2 klasser og splitter den op i 2 klasser hvis den gør.
+        
+        while(i < 10 && wordclasses[i] != NULL){
+            if(strstr(wordclasses[i], ",") != NULL){
+                char * token = strtok(wordclasses[i], ",");
+                wordclasses[i] = token;
+                token = strtok(NULL, ",");
+                wordclasses[i+1] = token;
+            }
+            i++;  
+        }
+        if(wordclasses[1] == NULL && strcmp(wordclasses[0], "x") != 0){
 
-    ord_array[2][0] = 'h';
-    ord_array[2][1] = 'a';
-    ord_array[2][2] = 'r';
-    ord_array[2][3] = '\0';
+            int class_i = class_index(wordclasses[0]);
+            //printf("%s\n", wordclasses[0]);
+            char * ordklasse = index_to_dataclass(class_i);
+            return ordklasse;
+            
+        }else{
+            //run switch
+            for(int j = 0; j < i; j++){
+                run_switch2(wordclasses[j], class_score, dictionary_words, index);
+            }
+            //check highest score 
+            int score = -1;
+            for(int j = 0; j < ORDBOG_CLASS_COUNT; j++){
+                if(class_score[j] != NULL && class_score[j] >= score){
+                    score = j;
+                }
+            }
+            char * ordklasse = index_to_dataclass(score);
+            return ordklasse;
+        }
+    
+    }else{
+        //printf("ordet findes ikke i ordbogen vi kører standart funktioner:");
+    }
+    return "x";
+}
 
-    class_array[2][0] = 'A';
-    class_array[2][1] = 'U';
-    class_array[2][2] = 'X';
-    class_array[2][3] = '\0';
+void run_switch2(char *ord, int * class_score, char ** dictionary_words, int index) {    
+    if(strcmp(ord, "x") == 0){
+        //printf("- we have to run other tests on this word: \n");
+    }else if(strcmp(ord, "pron") == 0){
+        class_score[0] = pronomener(dictionary_words[index]);
+    }else if(strcmp(ord, "artikel") == 0){
+        class_score[1] = artikler(dictionary_words[index]);
+    }else if(strcmp(ord, "sb") == 0){
+        class_score[2] = substantiver(dictionary_words[index]);
+        //printf("substantiv + %d\n", class_score[2]);
+    }else if(strcmp(ord, "vb") == 0){
+        class_score[3] = verber(dictionary_words[index]);
+    }else if(strcmp(ord, "adj") == 0){
+        class_score[4] = adjektiver(dictionary_words[index]);
+    }else if(strcmp(ord, "adv") == 0){
+        class_score[5] = adverbier(dictionary_words[index]);
+    }else if(strcmp(ord, "konj") == 0){
+        class_score[6] = konjunktioner(dictionary_words[index]);
+    }else if(strcmp(ord, "prop") == 0){
+        //class_score[7] = prop(dictionary_words[index]); // Dette skal laves
+    }else if(strcmp(ord, "praep") == 0){
+        class_score[8] = praepositioner(dictionary_words[index]);
+    }else if(strcmp(ord, "praefiks") == 0){
+        //class_score[9] = praefiks(dictionary_words[index]); // Dette skal laves
+    }else if(strcmp(ord, "talord") == 0){
+        class_score[10] = talord(dictionary_words[index]);
+    }else if(strcmp(ord, "lydord") == 0){
+        class_score[11] = lydord(dictionary_words[index]);
+    }else if(strcmp(ord, "udraabsord") == 0){
+        class_score[12] = udraabsord(dictionary_words[index]);
+    }else if(strcmp(ord, "fork") == 0){
+        //class_score[13] = fork(dictionary_words[index]) // Dette skal laves
+    }else{
+        //printf("fejl i switch");
+    }
+    
+    //return "test";
+}
 
-    ord_array[3][0] = 'S';
-    ord_array[3][1] = 'I';
-    ord_array[3][2] = 'D';
-    ord_array[3][3] = '\0';
+int class_index(char *ord) {    
+    
+    if(strcmp(ord, "pron")){
+        return 0;
+    }else if (strcmp(ord, "artikel")){
+        return 1;
+    }else if (strcmp(ord, "sb")){
+        return 2;
+    }else if (strcmp(ord, "vb")){
+        return 3;
+    }else if (strcmp(ord, "adj")){
+        return 4;
+    }else if (strcmp(ord, "adv")){
+        return 5;
+    }else if (strcmp(ord, "konj")){
+        return 6;
+    }else if (strcmp(ord, "prop")){
+        return 7;
+    }else if (strcmp(ord, "praep")){
+        return 8;
+    }else if (strcmp(ord, "praefiks")){
+        return 9;
+    }else if (strcmp(ord, "talord")){
+        return 10;
+    }else if (strcmp(ord, "lydord")){
+        return 11;
+    }else if (strcmp(ord, "udraabsord")){
+        return 12;
+    }else if (strcmp(ord, "fork")){
+        return 13;
+    }else if (strcmp(ord, ".")){
+        return 14;
+    }
+    return -1;
+}
 
-    class_array[3][0] = 'P';
-    class_array[3][1] = 'R';
-    class_array[3][2] = 'O';
-    class_array[3][3] = 'P';
-    class_array[3][4] = 'N';
-    class_array[3][5] = '\0';
+char * index_to_dataclass(int index) {
+    switch (index)
+    {
+    case 0:
+        return "PRON";
+        break;
+    case 1:
+        return "DET";
+        break; 
+    case 2:
+        return "NOUN";
+        break; 
+    case 3:
+        return "VERB"; //eller AUX
+        break; 
+    case 4:
+        return "ADJ";
+        break; 
+    case 5:
+        return "ADV";
+        break; 
+    case 6:
+        return "CCONJ"; // Eller SCONJ og PART
+        break; 
+    case 7:
+        return "PROPN";
+        break; 
+    case 8:
+        return "ADP"; 
+        break; 
+    case 9:
+        return "x";//Praefiks eksistere ikke
+        break; 
+    case 10:
+        return "NUM";
+        break; 
+    case 11:
+        return "INTJ"; 
+        break; 
+    case 12:
+        return "x"; //udråbsord eksistere ikke
+        break; 
+    case 13:
+        return "x"; //forkortelser eksistere ikke
+        break;   
+    case 14:
+        return "PUNCT";
+        break;   
+    }
 
-    ord_array[4][0] = 'i';
-    ord_array[4][1] = 'n';
-    ord_array[4][2] = 'v';
-    ord_array[4][3] = 'i';
-    ord_array[4][4] = 't';
-    ord_array[4][5] = 'e';
-    ord_array[4][6] = 'r';
-    ord_array[4][7] = 'e';
-    ord_array[4][8] = 't';
-    ord_array[4][9] = '\0';
-
-    class_array[4][0] = 'V';
-    class_array[4][1] = 'E';
-    class_array[4][3] = 'R';
-    class_array[4][4] = 'B';
-    class_array[4][5] = '\0';
-
-    ord_array[5][0] = 't';
-    ord_array[5][1] = 'i';
-    ord_array[5][2] = 'l';
-    ord_array[5][3] = '\0';
-
-    class_array[5][0] = 'A';
-    class_array[5][1] = 'D';
-    class_array[5][2] = 'P';
-    class_array[5][3] = '\0';
-
-    ord_array[6][0] = 'r';
-    ord_array[6][1] = 'e';
-    ord_array[6][2] = 'c';
-    ord_array[6][3] = 'e';
-    ord_array[6][4] = 'p';
-    ord_array[6][5] = 't';
-    ord_array[6][6] = 'i';
-    ord_array[6][7] = 'o';
-    ord_array[6][8] = 'n';
-    ord_array[6][9] = '\0';
-
-    class_array[6][0] = 'N';
-    class_array[6][1] = 'O';
-    class_array[6][3] = 'U';
-    class_array[6][4] = 'N';
-    class_array[6][5] = '\0';
-
-    ord_array[7][0] = 'i';
-    ord_array[7][1] = '\0';
-
-    class_array[7][0] = 'A';
-    class_array[7][1] = 'D';
-    class_array[7][2] = 'P';
-    class_array[7][3] = '\0';
-
-    ord_array[8][0] = 'S';
-    ord_array[8][1] = 'I';
-    ord_array[8][2] = 'D';
-    ord_array[8][3] = '-';
-    ord_array[8][4] = 'h';
-    ord_array[8][5] = 'u';
-    ord_array[8][6] = 's';
-    ord_array[8][7] = 'e';
-    ord_array[8][8] = 't';
-    ord_array[8][9] = '\0';
-
-    class_array[8][0] = 'N';
-    class_array[8][1] = 'O';
-    class_array[8][2] = 'U';
-    class_array[8][3] = 'N';
-    class_array[8][4] = '\0';
-
-    ord_array[9][0] = 'i';
-    ord_array[9][1] = '\0';
-
-    class_array[9][0] = 'A';
-    class_array[9][1] = 'D';
-    class_array[9][2] = 'P';
-    class_array[9][4] = '\0';
-
-    ord_array[10][0] = 'a';
-    ord_array[10][1] = 'n';
-    ord_array[10][2] = 'l';
-    ord_array[10][3] = 'e';
-    ord_array[10][4] = 'd';
-    ord_array[10][5] = 'n';
-    ord_array[10][6] = 'i';
-    ord_array[10][7] = 'n';
-    ord_array[10][8] = 'g';
-    ord_array[10][9] = '\0';
-
-    class_array[10][0] = 'N';
-    class_array[10][1] = 'O';
-    class_array[10][2] = 'U';
-    class_array[10][3] = 'N';
-    class_array[10][4] = '\0';
-
-    ord_array[11][0] = 'a';
-    ord_array[11][1] = 'f';
-    ord_array[11][2] = '\0';
-
-    class_array[11][0] = 'A';
-    class_array[11][1] = 'D';
-    class_array[11][2] = 'P';
-    class_array[11][3] = '\0';
-
-    ord_array[12][0] = 'a';
-    ord_array[12][1] = 't';
-    ord_array[12][2] = '\0';
-
-    class_array[12][0] = 'S';
-    class_array[12][1] = 'C';
-    class_array[12][2] = 'O';
-    class_array[12][3] = 'N';
-    class_array[12][4] = 'J';
-    class_array[12][5] = '\0';
-
-    ord_array[13][0] = 'f';
-    ord_array[13][1] = 'o';
-    ord_array[13][2] = 'r';
-    ord_array[13][3] = 'm';
-    ord_array[13][4] = 'a';
-    ord_array[13][5] = 'n';
-    ord_array[13][6] = 'd';
-    ord_array[13][7] = 'e';
-    ord_array[13][8] = 'n';
-    ord_array[13][9] = '\0';
-
-    class_array[13][0] = 'N';
-    class_array[13][1] = 'O';
-    class_array[13][2] = 'U';
-    class_array[13][3] = 'N';
-    class_array[13][4] = '\0';
-
-    ord_array[14][0] = 'K';
-    ord_array[14][1] = 'j';
-    ord_array[14][2] = 'e';
-    ord_array[14][3] = 'l';
-    ord_array[14][4] = 'd';
-    ord_array[14][5] = '\0';
-
-    class_array[14][0] = 'P';
-    class_array[14][1] = 'R';
-    class_array[14][2] = 'O';
-    class_array[14][3] = 'P';
-    class_array[14][4] = 'N';
-    class_array[14][5] = '\0';
-
-    ord_array[15][0] = 'C';
-    ord_array[15][1] = 'h';
-    ord_array[15][2] = 'r';
-    ord_array[15][3] = 'i';
-    ord_array[15][4] = 's';
-    ord_array[15][5] = 't';
-    ord_array[15][6] = 'e';
-    ord_array[15][7] = 'n';
-    ord_array[15][8] = 's';
-    ord_array[15][9] = 'e';
-    ord_array[15][10] = 'n';
-    ord_array[15][11] = '\0';
-
-    class_array[15][0] = 'P';
-    class_array[15][1] = 'R';
-    class_array[15][2] = 'O';
-    class_array[15][3] = 'P';
-    class_array[15][4] = 'N';
-    class_array[15][5] = '\0';
-
-    ord_array[16][0] = 'g';
-    ord_array[16][1] = 'a';
-    ord_array[16][2] = 'a';
-    ord_array[16][3] = 'r';
-    ord_array[16][4] = '\0';
-
-    class_array[16][0] = 'V';
-    class_array[16][1] = 'E';
-    class_array[16][2] = 'R';
-    class_array[16][3] = 'B';
-    class_array[16][4] = '\0';
-
-    ord_array[17][0] = 'i';
-    ord_array[17][1] = 'n';
-    ord_array[17][2] = 'd';
-    ord_array[17][3] = '\0';
-
-    class_array[17][0] = 'A';
-    class_array[17][1] = 'D';
-    class_array[17][2] = 'V';
-    class_array[17][4] = '\0';
-
-    ord_array[18][0] = 'i';
-    ord_array[18][1] = '\0';
-
-    class_array[18][0] = 'A';
-    class_array[18][1] = 'D';
-    class_array[18][2] = 'P';
-    class_array[18][4] = '\0';
-
-    ord_array[19][0] = 'd';
-    ord_array[19][1] = 'e';
-    ord_array[19][2] = '\0';
-
-    class_array[19][0] = 'D';
-    class_array[19][1] = 'E';
-    class_array[19][2] = 'T';
-    class_array[19][4] = '\0';
-
-    ord_array[20][0] = 'g';
-    ord_array[20][1] = 'l';
-    ord_array[20][2] = 'a';
-    ord_array[20][3] = 'd';
-    ord_array[20][4] = 'e';
-    ord_array[20][5] = '\0';
-
-    class_array[20][0] = 'A';
-    class_array[20][1] = 'D';
-    class_array[20][2] = 'J';
-    class_array[20][4] = '\0';
-
-    ord_array[21][0] = 't';
-    ord_array[21][1] = 'r';
-    ord_array[21][2] = 'e';
-    ord_array[21][3] = 's';
-    ord_array[21][4] = 's';
-    ord_array[21][5] = 'e';
-    ord_array[21][6] = 'r';
-    ord_array[21][7] = 'e';
-    ord_array[21][8] = '\0';
-
-    class_array[21][0] = 'N';
-    class_array[21][1] = 'O';
-    class_array[21][2] = 'U';
-    class_array[21][3] = 'N';
-    class_array[21][4] = '\0';
-
-    ord_array[22][0] = '.';
-    ord_array[22][1] = '\0';
-
-    class_array[22][0] = 'P';
-    class_array[22][1] = 'U';
-    class_array[22][2] = 'N';
-    class_array[22][3] = 'C';
-    class_array[22][4] = 'T';
-    class_array[22][5] = '\0';
+    return "x";
 }

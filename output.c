@@ -5,26 +5,19 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define WORDS_COUNT 70000
-#define WORDS_IN_ORDBOG 64894
+void print_output(char **data_words, char **data_wordclass, char **estimate_wordclass, int *truefalse_array, int data_size);
 
 //Funktionen læser ind: Ord fra filen, Ordklassen fra filen, vores gæt, og så en true/false comparison.
-void print_output(char **input_ord, char **input_class, char **input_guess, int *output_truefalse) {
-    input_ord[0] = "hus";
-    input_class[0] = "NOUN";
-    input_guess[0] = "sb";
+void print_output(char **input_ord, char **input_class, char **input_guess, int *output_truefalse, int data_size) {
 
-    input_ord[1] = "bil";
-    input_class[1] = "NOUN";
-    input_guess[1] = "sb";
-
-    input_ord[2] = "realtest";
-    input_class[2] = "test";
-    input_guess[2] = "test";
+    for(int i = 0; i < 20; i++){
+        char * estimate = get_estimate(dictionary_words, dictionary_wordclass, data_words[i]);
+        printf("%s\n", estimate);
+    }
 
     int c;
     int winrate = 0;
-    for(c = 0; c < WORDS_COUNT; c++) {
+    for(c = 0; c < data_size; c++) {
 
         if(input_ord[c] == NULL || input_class[c] == NULL || input_guess[c] == NULL){
             continue;
