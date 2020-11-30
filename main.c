@@ -30,14 +30,14 @@ int main(void){
     int winrate = 0;
     int i;
 
-    estimate_wordclass[0] = get_estimate(dictionary_words, dictionary_wordclass, data_words[0]);
+    //estimate_wordclass[0] = get_estimate(dictionary_words, dictionary_wordclass, data_words[0]);
 
-    printf("%d: %s\t%s\t%s\t%d\n",i+1, data_words[0], data_wordclass[0], estimate_wordclass[0], truefalse_array[0]);
+    //printf("%d: %s\t%s\t%s\t%d\n",i+1, data_words[0], data_wordclass[0], estimate_wordclass[0], truefalse_array[0]);
 
     //estimate_wordclass[0] = get_estimate(dictionary_words, dictionary_wordclass, data_words[4405]);
     //printf("%s %s\n",estimate_wordclass[0], data_words[4405]);
-    /*
-    for(i = 25000; i < 80000; i++) {
+    
+    for(i = 0; i < 80378; i++) {
 
         estimate_wordclass[i] = get_estimate(dictionary_words, dictionary_wordclass, data_words[i]);
         
@@ -67,6 +67,6 @@ int main(void){
     free(truefalse_array);
     free(dictionary_words);
     free(dictionary_wordclass);
-    */
+    
     return 0;
 }

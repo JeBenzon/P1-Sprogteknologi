@@ -59,6 +59,8 @@ void get_data(char ** data_words, char ** data_wordclass, int data_size){
         //printf("ord: %s ", token);
         //læser ordet fra Token og sætter det ind i Ord array
         int f;
+
+
         for(f = 0; f < (int)strlen(token); f++){
             data_words[i][f] = token[f];
         }
