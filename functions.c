@@ -541,6 +541,9 @@ int bin_search(char *search, char **dictionary_words){
 char ** get_wordclass(int index, char **dictionary_words, char **dictionary_wordclass){
 
     char ** wordclasses = malloc(10 * sizeof(char *));
+    for(int i=0; i<10; i++){
+        wordclasses[i] = malloc(300 * sizeof(char));
+    }
 
     //Checker at wordclasses blev oprettet i Memory,
     if(wordclasses != NULL){
@@ -548,7 +551,7 @@ char ** get_wordclass(int index, char **dictionary_words, char **dictionary_word
         int i = 0;
         //checks above index and acumulate wordclasses
         while(strcmp(dictionary_words[index], dictionary_words[new_index]) == 0){
-            wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
+            //wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
             if(wordclasses[i] != NULL){
                 wordclasses[i] = dictionary_wordclass[new_index];
                 new_index++;
@@ -556,11 +559,11 @@ char ** get_wordclass(int index, char **dictionary_words, char **dictionary_word
             }else{
                 printf("NO SPACE IN MEMORY");
             }            
-        }
+        } // addr2line -e ./a.out 0x564b002f2a65 
         //checks below index and acumulate wordclasses
         new_index = index-1;
         while(strcmp(dictionary_words[index], dictionary_words[new_index]) == 0){
-            wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
+            //wordclasses[i] = (char *)malloc(WORDS_COUNT * sizeof(char));
             if(wordclasses[i] != NULL){
                 wordclasses[i] = dictionary_wordclass[new_index];
                 new_index--;
@@ -578,10 +581,25 @@ char ** get_wordclass(int index, char **dictionary_words, char **dictionary_word
     return wordclasses;
 }
 
+
+int containscomma(char * word){
+    int commacount = 0;
+    for(int i = 0; i < sizeof(word);i++){
+        if(word[i] == ','){
+            commacount++;
+        }
+    }
+    return commacount;
+}
+
 char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char * ord){
     
-    int *wordclass = calloc(WORDS_COUNT, sizeof(int));
+    //int *wordclass = calloc(WORDS_COUNT, sizeof(int));
     int * class_score = calloc(WORDS_COUNT, sizeof(int));
+    
+    if(class_score == NULL){
+        exit(EXIT_FAILURE);
+    }
 
     int index = bin_search(ord, dictionary_words);
     //printf("%d, %s", index, dictionary_words[index]);
@@ -593,7 +611,9 @@ char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char
         //checker om ordet indeholder 2 klasser og splitter den op i 2 klasser hvis den gør.
         
         while(i < 10 && wordclasses[i] != NULL){
-            if(strstr(wordclasses[i], ",") != NULL){
+            if(containscomma(wordclasses[i]) > 0){
+            //if(strstr(wordclasses[i], ",") != NULL){
+                //printf("%s\n",wordclasses[i]);
                 char * token = strtok(wordclasses[i], ",");
                 wordclasses[i] = token;
                 token = strtok(NULL, ",");
@@ -601,7 +621,7 @@ char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char
             }
             i++;  
         }
-        if(wordclasses[1] == NULL && strcmp(wordclasses[0], "x") != 0){
+        if(wordclasses[1] == 0 && strcmp(wordclasses[0], "x") != 0){
 
             int class_i = class_index(wordclasses[0]);
             //printf("%s\n", wordclasses[0]);
@@ -616,7 +636,7 @@ char * get_estimate(char ** dictionary_words, char ** dictionary_wordclass, char
             //check highest score 
             int score = -1;
             for(int j = 0; j < ORDBOG_CLASS_COUNT; j++){
-                if(class_score[j] != NULL && class_score[j] >= score){
+                if(class_score[j] != 0 && class_score[j] >= score){
                     score = j;
                 }
             }

@@ -37,10 +37,12 @@ int main(void){
     //estimate_wordclass[0] = get_estimate(dictionary_words, dictionary_wordclass, data_words[4405]);
     //printf("%s %s\n",estimate_wordclass[0], data_words[4405]);
     
-    for(i = 0; i < 80378; i++) {
+    for(i = 0; i < 1; i++) {
+
+
 
         estimate_wordclass[i] = get_estimate(dictionary_words, dictionary_wordclass, data_words[i]);
-        
+
 
         if(data_words[i] != NULL || data_wordclass[i] != NULL || estimate_wordclass[i] != NULL){
             
