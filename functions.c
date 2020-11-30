@@ -654,32 +654,32 @@ void run_switch2(char *ord, int * class_score, char ** dictionary_words, int ind
     if(strcmp(ord, "x") == 0){
         //printf("- we have to run other tests on this word: \n");
     }else if(strcmp(ord, "pron") == 0){
-        class_score[0] = pronomener(dictionary_words[index]);
+        class_score[0] = 1; //pronomener(dictionary_words[index]);
     }else if(strcmp(ord, "artikel") == 0){
-        class_score[1] = artikler(dictionary_words[index]);
+        class_score[1] = 1; //artikler(dictionary_words[index]);
     }else if(strcmp(ord, "sb") == 0){
-        class_score[2] = substantiver(dictionary_words[index]);
+        class_score[2] = 1; //substantiver(dictionary_words[index]);
         //printf("substantiv + %d\n", class_score[2]);
     }else if(strcmp(ord, "vb") == 0){
-        class_score[3] = verber(dictionary_words[index]);
+        class_score[3] = 1; //verber(dictionary_words[index]);
     }else if(strcmp(ord, "adj") == 0){
-        class_score[4] = adjektiver(dictionary_words[index]);
+        class_score[4] = 1; //adjektiver(dictionary_words[index]);
     }else if(strcmp(ord, "adv") == 0){
-        class_score[5] = adverbier(dictionary_words[index]);
+        class_score[5] = 1; //adverbier(dictionary_words[index]);
     }else if(strcmp(ord, "konj") == 0){
-        class_score[6] = konjunktioner(dictionary_words[index]);
+        class_score[6] = 1; //konjunktioner(dictionary_words[index]);
     }else if(strcmp(ord, "prop") == 0){
         //class_score[7] = prop(dictionary_words[index]); // Dette skal laves
     }else if(strcmp(ord, "praep") == 0){
-        class_score[8] = praepositioner(dictionary_words[index]);
+        class_score[8] = 1; //praepositioner(dictionary_words[index]);
     }else if(strcmp(ord, "praefiks") == 0){
         //class_score[9] = praefiks(dictionary_words[index]); // Dette skal laves
     }else if(strcmp(ord, "talord") == 0){
-        class_score[10] = talord(dictionary_words[index]);
+        class_score[10] = 1; //talord(dictionary_words[index]);
     }else if(strcmp(ord, "lydord") == 0){
-        class_score[11] = lydord(dictionary_words[index]);
+        class_score[11] = 1; //lydord(dictionary_words[index]);
     }else if(strcmp(ord, "udraabsord") == 0){
-        class_score[12] = udraabsord(dictionary_words[index]);
+        class_score[12] = 1; //udraabsord(dictionary_words[index]);
     }else if(strcmp(ord, "fork") == 0){
         //class_score[13] = fork(dictionary_words[index]) // Dette skal laves
     }else{
