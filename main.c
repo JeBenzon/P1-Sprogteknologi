@@ -15,7 +15,7 @@ int main(void){
     
     char **data_words = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
     char **data_wordclass = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
-     
+    
     char **estimate_wordclass = (char **)malloc(WORDS_IN_DATA * sizeof(char *));
 
     //truefalse array
