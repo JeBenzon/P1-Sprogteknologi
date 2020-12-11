@@ -23,7 +23,7 @@ int str_ending_compare(char *ord, char *ending);
 char *to_lower_case(char *ord);
 
 int substantiver(char *ord);  // navneord
-int is_capitol_letter(char first_letter);
+int is_capital_letter(char first_letter);
 int sub_correct_ending(char *ord);
 
 int adjektiver(char *ord);  // tillaegsord
@@ -105,12 +105,12 @@ char *to_lower_case(char *ord) {
 int substantiver(char *ord) {
     //printf(" %s\n\n", ord);
     int score = 0;
-    if (is_capitol_letter(ord[0]) == 2) {
-        //printf("capitol er opfyldt\n\n");
+    if (is_capital_letter(ord[0]) == 2) {
+        //printf("capital er opfyldt\n\n");
         //printf("nyt ord er %s\n\n", to_lower_case(ord));
         score++;
     } else {
-        //printf("capitol er ikke opfyldt\n\n");
+        //printf("capital er ikke opfyldt\n\n");
     }
 
     if (sub_correct_ending(ord) == 1) {
@@ -123,7 +123,7 @@ int substantiver(char *ord) {
     return score;
 }
 
-int is_capitol_letter(char first_letter) {
+int is_capital_letter(char first_letter) {
     if (first_letter >= 'A' && first_letter <= 'Z') {
         return 2;
     } else if (first_letter >= 'a' && first_letter <= 'z') {
@@ -464,8 +464,6 @@ int bin_search(char *search, char **dictionary_words){
     }
     if (first > last){
         printf("Not found! '%s' isn't present in the list.\n", lowercase_search);
-        free(lowercase_search);
-        return -1;
     }
     //printf("naede til return\n");
     free(lowercase_search);
