@@ -7,6 +7,7 @@
 
 #define LINE_LEN 1000
 #define WORD_LEN 500
+#define MAX_FILE_LEN 50
 #define DICTIONARY "Data/RO2012.opslagsord.med.homnr.og.ordklasse_sorted_2.csv"
 #define DATA_TRAIN "Data/da_ddt-ud-train"
 #define DATA_TEST "Data/da_ddt-ud-test"
@@ -164,7 +165,7 @@ void printArray(char ** array_words, char ** array_class){
 }
 
 char * menu_filvalg(){ //Skal implementeres, så den retunerer "filnavn" i korrekt sammenhæng.
-    char * fil = (char *)malloc(50 * sizeof(char *));
+    char * fil = (char *)malloc(MAX_FILE_LEN * sizeof(char *));
     int menu;
     //Læsning til brugeren, spørg om valg til switchen 1, 2 eller 3.
     printf("------------------------\n");
