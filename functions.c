@@ -518,7 +518,7 @@ char ** get_wordclass(int index, char **dictionary_words, char **dictionary_word
 
 int containscomma(char * word){
     int commacount = 0;
-    for(int i = 0; i < sizeof(word);i++){
+    for(int i = 0; i < (int)sizeof(word);i++){
         if(word[i] == ','){
             commacount++;
         }
